@@ -1,6 +1,6 @@
 /* Legal Lab service worker.
  * Bump CACHE every time you upload new files — that's what tells phones to update. */
-const CACHE = 'legal-lab-v1.1.0';
+const CACHE = 'legal-lab-v1.2.0';
 const ASSETS = ['./', './index.html', './app.js', './lessons.js', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

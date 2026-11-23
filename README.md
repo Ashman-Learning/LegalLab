@@ -15,7 +15,7 @@ index.html · app.js · lessons.js · sw.js · manifest.json · icon-192.png · 
 ## Adding lessons later (how phones update)
 1. Add new lesson objects to the end of `LESSONS` in `lessons.js`.
 2. In `lessons.js`, bump `CONTENT_VERSION` (e.g. 1.0.0 → 1.1.0).
-3. In `sw.js`, bump `CACHE` to match (e.g. `legal-lab-v1.1.0`).
+3. In `sw.js`, bump `CACHE` to match (e.g. `legal-lab-v1.2.0`).
 4. Upload the changed files (replace the old ones).
 Phones fetch the new version next time the app is opened online and show "New lessons available".
 Student progress is kept.

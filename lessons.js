@@ -13,7 +13,7 @@
  * Teach card types: rule {title, html} · contrast {title, rule, examples, nonexamples} · diagram {title, svg, caption}
  * Set released:false to hide a lesson until it's taught.
  */
-window.CONTENT_VERSION = '1.1.0';
+window.CONTENT_VERSION = '1.2.0';
 
 const SVG_COURTS = `
 <svg class="diagram" viewBox="0 0 640 380" role="img" aria-label="Victorian court hierarchy for criminal cases">

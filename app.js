@@ -207,6 +207,7 @@ function home() {
   }
   html += `</div>`;
 
+  html += extraCard();
   html += `<div class="card"><h2>Course map</h2><p class="muted">${mastered} of ${LESSONS.length} released lessons mastered.</p>`;
   let lastArea = '';
   LESSONS.forEach((l, i) => {
@@ -227,6 +228,7 @@ function home() {
 
   const gr = $('#goReview'); if (gr) gr.onclick = review;
   const gl = $('#goLesson'); if (gl) gl.onclick = () => startLesson(ni);
+  wireExtra();
   document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => startLesson(+b.dataset.open));
   $('#exp').onclick = () => {
     const code = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
@@ -384,13 +386,14 @@ function runCheck() {
 }
 
 /* ---------- REVIEW ---------- */
+let frameLabel = 'Spaced review';
 function reviewFrame(inner, n, total) {
   const pct = Math.round(100 * Math.min(n-1, total) / Math.max(total,1));
-  return `<div class="progress"><div style="width:${pct}%"></div></div><div class="steplabel">Spaced review</div>
+  return `<div class="progress"><div style="width:${pct}%"></div></div><div class="steplabel">${frameLabel}</div>
     <div class="card">${inner}</div><button class="btn ghost" id="quit">← Back to home</button>`;
 }
 function review() {
-  L = null;
+  L = null; frameLabel = 'Spaced review';
   const ids = shuffle(dueItems().slice(0, CONFIG.reviewCap)); // shuffled = interleaved across lessons
   const items = ids.map(id => ITEM_INDEX[id]);
   let right = 0;
@@ -400,6 +403,81 @@ function review() {
       markActive(); save();
       app().innerHTML = reviewFrame(`<div class="score">${right}/${items.length}</div><h2 style="text-align:center">Review done</h2>
         <p>Items you got right are spaced further out. Items you missed come back tomorrow.</p>${nextBtn('Back to home')}`, items.length+1, items.length);
+      wireNext(home); $('#quit').onclick = home;
+    }});
+}
+
+
+/* ---------- EXTRA PRACTICE (optional, between lessons) ----------
+ * Draws only on lessons already mastered. Weighted toward weaker items.
+ * Does NOT move items further out in the spaced schedule (that's the review's job),
+ * but a miss brings that item back into tomorrow's review.
+ */
+const EXTRA_SIZE = 10;
+function masteredLessons() { return LESSONS.filter(l => S.lessons[l.id] && S.lessons[l.id].mastered); }
+function lessonItems(l) { return [...(l.practice||[]), ...(l.check||[])].filter(usable); }
+function weight(id) {
+  const r = S.items[id]; if (!r) return 3;
+  return 1 + Math.max(0, 4 - r.box) + Math.min(r.wrong, 4);   // low box / many misses → more likely
+}
+function weightedPick(ids, n) {
+  const pool = ids.map(id => ({id, w: weight(id)})), out = [];
+  while (out.length < n && pool.length) {
+    let t = pool.reduce((a, p) => a + p.w, 0) * Math.random(), k = 0;
+    while (k < pool.length - 1 && (t -= pool[k].w) > 0) k++;
+    out.push(pool.splice(k, 1)[0].id);
+  }
+  return out;
+}
+function extraCard() {
+  const ms = masteredLessons();
+  if (!ms.length) return '';
+  const doneToday = S.extraDay === today() ? S.extraCount || 0 : 0;
+  let h = `<div class="card"><h2>Extra practice <span class="chip">optional</span></h2>
+    <p class="muted">For any time between lessons. Mixed questions from lessons you've mastered, weighted towards the ones you find harder. About 5 minutes per set.${doneToday ? ` You've done ${doneToday} set${doneToday > 1 ? 's' : ''} today.` : ''}</p>
+    <button class="btn block" id="xMixed">Mixed practice — ${EXTRA_SIZE} questions</button>
+    <button class="btn secondary block" id="xWeak">My trickiest questions</button>
+    <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">Practise one topic…</summary>`;
+  let area = '';
+  ms.forEach(l => {
+    if (l.area !== area) { h += `<h3>${esc(l.area)}</h3>`; area = l.area; }
+    h += `<button class="btn ghost" style="display:block;text-align:left" data-xtopic="${l.id}">${LESSONS.indexOf(l)+1}. ${esc(l.title)}</button>`;
+  });
+  return h + `</details></div>`;
+}
+function wireExtra() {
+  const m = $('#xMixed'); if (!m) return;
+  const all = masteredLessons().flatMap(l => lessonItems(l).map(i => i.id));
+  m.onclick = () => extraPractice(weightedPick(all, EXTRA_SIZE), 'Extra practice — mixed');
+  $('#xWeak').onclick = () => {
+    const tricky = all.filter(id => S.items[id] && (S.items[id].wrong > 0 || S.items[id].box === 0))
+      .sort((a, b) => (S.items[b].wrong - S.items[a].wrong) || (S.items[a].box - S.items[b].box)).slice(0, EXTRA_SIZE);
+    if (tricky.length < 3) { alert('Not enough tricky questions yet — nice work. Try mixed practice instead.'); return; }
+    extraPractice(shuffle(tricky), 'Extra practice — trickiest');
+  };
+  document.querySelectorAll('[data-xtopic]').forEach(b => b.onclick = () => {
+    const l = LESSONS.find(x => x.id === b.dataset.xtopic);
+    extraPractice(shuffle(lessonItems(l).map(i => i.id)).slice(0, EXTRA_SIZE), 'Extra practice — ' + l.title);
+  });
+}
+function extraPractice(ids, label) {
+  L = null; frameLabel = label;
+  const items = ids.map(id => ITEM_INDEX[id]).filter(Boolean);
+  let right = 0;
+  runQueue(items, {label:'Hints allowed · misses come back once', hint:true, requeueWrong:true,
+    onAnswer: (it, ok, isRetry) => {
+      if (isRetry) return;
+      if (ok) right++;
+      else if (S.items[it.id]) { S.items[it.id].box = 0; S.items[it.id].wrong++; S.items[it.id].due = addDays(today(), 1); }
+      save();
+    },
+    onFinish: () => {
+      if (S.extraDay !== today()) { S.extraDay = today(); S.extraCount = 0; }
+      S.extraCount++; markActive(); save();
+      app().innerHTML = reviewFrame(`<div class="score">${right}/${items.length}</div><h2 style="text-align:center">Set done</h2>
+        <p>${right === items.length ? 'Perfect set.' : 'Anything you missed will come back in tomorrow’s review.'}</p>
+        <button class="btn block" id="again">Another set</button>${nextBtn('Back to home')}`, items.length+1, items.length);
+      $('#again').onclick = () => { home(); const b = $('#xMixed'); if (b) b.click(); };
       wireNext(home); $('#quit').onclick = home;
     }});
 }
