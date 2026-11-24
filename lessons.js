@@ -13,7 +13,7 @@
  * Teach card types: rule {title, html} · contrast {title, rule, examples, nonexamples} · diagram {title, svg, caption}
  * Set released:false to hide a lesson until it's taught.
  */
-window.CONTENT_VERSION = '1.2.0';
+window.CONTENT_VERSION = '1.4.0';
 
 const SVG_COURTS = `
 <svg class="diagram" viewBox="0 0 640 380" role="img" aria-label="Victorian court hierarchy for criminal cases">
@@ -79,6 +79,51 @@ const SVG_SANCTIONS = `
  <text x="530" y="170" text-anchor="middle" font-size="18" fill="#1b2430">punishment</text>
  <text x="530" y="194" text-anchor="middle" font-size="18" fill="#1b2430">denunciation</text>
  <text x="530" y="218" text-anchor="middle" font-size="18" fill="#1b2430">deterrence</text>
+</svg>`;
+
+
+const SVG_ADR = `
+<svg class="diagram" viewBox="0 0 640 300" role="img" aria-label="Power of the third party: mediation, conciliation, arbitration">
+ <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a8c"/></marker></defs>
+ <line x1="20" y1="40" x2="610" y2="40" stroke="#1f7a8c" stroke-width="4" marker-end="url(#ar2)"/>
+ <text x="20" y="26" font-size="18" font-weight="700" fill="#1f7a8c">Third party has more power →</text>
+ <rect x="10" y="70" width="200" height="210" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="3"/>
+ <text x="110" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3557">Mediation</text>
+ <text x="110" y="148" text-anchor="middle" font-size="18" fill="#1b2430">mediator</text>
+ <text x="110" y="174" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2430">facilitates</text>
+ <text x="110" y="226" text-anchor="middle" font-size="16" fill="#5b6675">parties decide</text>
+ <rect x="220" y="70" width="200" height="210" rx="10" fill="#fff4c2" stroke="#b08900" stroke-width="3"/>
+ <text x="320" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3557">Conciliation</text>
+ <text x="320" y="148" text-anchor="middle" font-size="18" fill="#1b2430">conciliator</text>
+ <text x="320" y="174" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2430">suggests</text>
+ <text x="320" y="226" text-anchor="middle" font-size="16" fill="#5b6675">parties decide</text>
+ <rect x="430" y="70" width="200" height="210" rx="10" fill="#fdecea" stroke="#c62828" stroke-width="3"/>
+ <text x="530" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3557">Arbitration</text>
+ <text x="530" y="148" text-anchor="middle" font-size="18" fill="#1b2430">arbitrator</text>
+ <text x="530" y="174" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2430">decides</text>
+ <text x="530" y="226" text-anchor="middle" font-size="16" fill="#5b6675">binding award</text>
+</svg>`;
+
+const SVG_CIVIL_COURTS = `
+<svg class="diagram" viewBox="0 0 640 330" role="img" aria-label="Victorian courts' civil jurisdiction">
+ <rect x="10" y="10" width="370" height="70" rx="10" fill="#e8eef6" stroke="#1d3557" stroke-width="3"/>
+ <text x="195" y="42" text-anchor="middle" font-size="21" font-weight="700" fill="#1d3557">Court of Appeal</text>
+ <text x="195" y="67" text-anchor="middle" font-size="17" fill="#5b6675">appeals</text>
+ <rect x="10" y="90" width="370" height="70" rx="10" fill="#e8eef6" stroke="#1d3557" stroke-width="3"/>
+ <text x="195" y="122" text-anchor="middle" font-size="21" font-weight="700" fill="#1d3557">Supreme Court (Trial Div.)</text>
+ <text x="195" y="147" text-anchor="middle" font-size="17" fill="#5b6675">unlimited · complex · class actions</text>
+ <rect x="10" y="170" width="370" height="70" rx="10" fill="#e8eef6" stroke="#1d3557" stroke-width="3"/>
+ <text x="195" y="202" text-anchor="middle" font-size="21" font-weight="700" fill="#1d3557">County Court</text>
+ <text x="195" y="227" text-anchor="middle" font-size="17" fill="#5b6675">unlimited</text>
+ <rect x="10" y="250" width="370" height="70" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="3"/>
+ <text x="195" y="282" text-anchor="middle" font-size="21" font-weight="700" fill="#1d3557">Magistrates' Court</text>
+ <text x="195" y="307" text-anchor="middle" font-size="17" fill="#5b6675">up to $100,000</text>
+ <path d="M392,95 L405,95 L405,235 L392,235" fill="none" stroke="#1f7a8c" stroke-width="3"/>
+ <text x="415" y="150" font-size="20" font-weight="700" fill="#1b2430">Jury of 6</text>
+ <text x="415" y="175" font-size="17" fill="#5b6675">if a party asks</text>
+ <text x="415" y="197" font-size="17" fill="#5b6675">and pays</text>
+ <text x="415" y="280" font-size="20" font-weight="700" fill="#1b2430">No jury</text>
+ <text x="415" y="304" font-size="17" fill="#5b6675">arbitration &lt; $10,000</text>
 </svg>`;
 
 window.LESSONS = [
@@ -1168,6 +1213,631 @@ window.LESSONS = [
     {id:'U3A1-20-c3', type:'mc', q:'Strictly, what may be aggravating in relation to a VIS?', options:['The harm it describes','The fact that a statement was made','The victim\'s handwriting','Nothing'], answer:0, explain:'The harm — not the statement itself.'},
     {id:'U3A1-20-c4', type:'text', q:'VIS stands for victim ______ statement.', accept:['impact'], explain:'Impact.'},
     {id:'U3A1-20-c5', type:'mc', q:'Which is a reason a guilty plea may show remorse?', options:['The offender accepts responsibility','The offender saves money','The jury is discharged','The victim is absent'], answer:0, explain:'Accepting responsibility.'}
+  ]
+},
+
+/* ============================================================ U3A2-01 */
+{ id:'U3A2-01', area:'Unit 3 AOS 2 · Civil justice system', title:'Civil disputes: key concepts',
+  kk:'Key principles in the Victorian civil justice system, including the burden of proof and the standard of proof',
+  pretrain:[
+    {term:'Civil dispute', def:'A disagreement between <span class="key">individuals or groups</span> in which one party claims the other has <span class="key">infringed their rights</span>.'},
+    {term:'Plaintiff', def:'The party who <span class="key">brings</span> the civil claim (sues).'},
+    {term:'Defendant', def:'The party being <span class="key">sued</span>.'},
+    {term:'Liability', def:'Legal responsibility. In a civil case the defendant is found <span class="key">liable</span> or <span class="key">not liable</span> — not "guilty".'},
+    {term:'Remedy', def:'An order designed to <span class="key">address the harm</span> to the plaintiff — e.g. damages (money).'}
+  ],
+  teach:[
+    {type:'rule', title:'Civil vs criminal — side by side', html:`
+      <table class="mini"><tr><th></th><th>Criminal</th><th>Civil</th></tr>
+      <tr><td>Who brings it?</td><td>Prosecution (the state)</td><td><b>Plaintiff</b> (the wronged party)</td></tr>
+      <tr><td>Against whom?</td><td>Accused</td><td><b>Defendant</b></td></tr>
+      <tr><td>Burden of proof</td><td>Prosecution</td><td><b>Plaintiff</b></td></tr>
+      <tr><td>Standard of proof</td><td>Beyond reasonable doubt</td><td><b>On the balance of probabilities</b></td></tr>
+      <tr><td>Outcome</td><td>Guilty / not guilty</td><td><b>Liable / not liable</b></td></tr>
+      <tr><td>Result</td><td>Sanction (e.g. fine, prison)</td><td><b>Remedy</b> (e.g. damages)</td></tr></table>
+      <p>Main aim of the civil system: to <b>restore the plaintiff</b> as far as possible to the position they were in before the wrong.</p>`},
+    {type:'contrast', title:'Use the right vocabulary',
+      rule:'Examiners penalise criminal words in civil answers.',
+      examples:[
+        {text:'"Grant was found liable and ordered to pay Andy damages."', why:'Correct civil terms. (2025 scenario.)'},
+        {text:'"Louise\'s clients, as plaintiffs, must prove their claim on the balance of probabilities."', why:'Correct party, burden and standard. (2024 scenario.)'}],
+      nonexamples:[
+        {text:'"The defendant was found guilty of negligence."', why:'Civil: liable, not guilty.'},
+        {text:'"The plaintiff received a sanction."', why:'Sanctions are criminal. The plaintiff seeks a remedy.'},
+        {text:'"The accused was sued."', why:'In a civil case, the person sued is the defendant.'}]}
+  ],
+  worked:[
+    {title:'Translating a scenario', prompt:'Agu and Kim are considering suing Emma for the cost of rebuilding their property. Identify the parties, who has the burden, and the standard. (2025 scenario)',
+     steps:['Who would bring the claim? Agu and Kim → plaintiffs.','Who would be sued? Emma → defendant.','Burden: the party who brings the case → Agu and Kim.','Standard: civil → on the balance of probabilities.'],
+     answer:'Plaintiffs <b>Agu and Kim</b> would bear the burden and must prove the claim <b>on the balance of probabilities</b> against defendant <b>Emma</b>.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A court decides that a builder did not breach her contract with a homeowner.',
+     given:['This is a civil case: homeowner (plaintiff) v builder (defendant).','The court found in the builder\'s favour.'],
+     item:{id:'U3A2-01-f1', type:'mc', q:'So the correct way to describe the outcome is:', options:['The builder was found not liable','The builder was found not guilty','The builder was acquitted','The builder was sentenced'], answer:0, explain:'Civil outcomes: liable / not liable.', hint:'Civil word for "responsible".'}}
+  ],
+  practice:[
+    {id:'U3A2-01-p1', type:'text', q:'The party who brings a civil claim is the ______.', accept:['plaintiff','plaintiffs'], explain:'Plaintiff.'},
+    {id:'U3A2-01-p2', type:'text', q:'The party being sued is the ______.', accept:['defendant','defendants'], explain:'Defendant.'},
+    {id:'U3A2-01-p3', type:'mc', q:'In a civil case, the defendant may be found:', options:['Liable or not liable','Guilty or not guilty','Convicted or acquitted','Sentenced or released'], answer:0, explain:'Liable / not liable.'},
+    {id:'U3A2-01-p4', type:'mc', q:'What is the main aim of a civil remedy?', options:['To restore the plaintiff to their original position as far as possible','To punish the defendant','To deter the community','To protect the community from the defendant'], answer:0, explain:'Restoration.'},
+    {id:'U3A2-01-p5', type:'tf', q:'The standard of proof in a civil case is on the balance of probabilities.', answer:true, explain:'True.'},
+    {id:'U3A2-01-p6', type:'tf', q:'In a civil case the plaintiff receives a sanction.', answer:false, explain:'False — sanctions are criminal; the plaintiff seeks a remedy.'}
+  ],
+  check:[
+    {id:'U3A2-01-c1', type:'mc', q:'Which sentence uses civil terms correctly?', options:['The defendant was found liable and ordered to pay damages','The defendant was found guilty and fined','The accused was found liable','The plaintiff was convicted'], answer:0, explain:'Liable + damages.'},
+    {id:'U3A2-01-c2', type:'mc', q:'Andy sues Grant for pain and suffering. Who has the burden of proof?', options:['Andy, the plaintiff','Grant, the defendant','The prosecution','The judge'], answer:0, explain:'The plaintiff.'},
+    {id:'U3A2-01-c3', type:'text', q:'An order designed to address the harm suffered by the plaintiff is called a ______.', accept:['remedy','remedies'], explain:'Remedy.'},
+    {id:'U3A2-01-c4', type:'tf', q:'"Liability" means legal responsibility.', answer:true, explain:'True.'},
+    {id:'U3A2-01-c5', type:'mc', q:'Which pair belongs to the civil justice system?', options:['Plaintiff and defendant','Prosecution and accused','Prosecution and defendant','Plaintiff and accused'], answer:0, explain:'Plaintiff and defendant.'}
+  ]
+},
+
+/* ============================================================ U3A2-02 */
+{ id:'U3A2-02', area:'Unit 3 AOS 2 · Civil justice system', title:'Before suing: costs, limitation of actions, enforcement',
+  kk:'Factors to consider before initiating a civil claim, including costs, limitation of actions and enforcement issues',
+  pretrain:[
+    {term:'Limitation of actions', def:'The <span class="key">time limit</span> within which a civil claim must be started.'},
+    {term:'Enforcement issues', def:'Whether the plaintiff will actually be able to <span class="key">obtain the remedy</span> if they win — e.g. whether the defendant can pay.'},
+    {term:'Costs', def:'Lawyers\' fees, court fees, expert reports — and the risk of paying the <span class="key">other side\'s costs</span> if you lose.'}
+  ],
+  teach:[
+    {type:'rule', title:'Three questions to ask before suing', html:`
+      <p>The study design names <b>three</b> factors. Learn exactly these three.</p>
+      <table class="mini"><tr><th>Factor</th><th>The question</th><th>Why it matters</th></tr>
+      <tr><td><b>Costs</b></td><td>Can I afford it — and the risk of losing?</td><td>Generally the <b>losing party pays</b> much of the winner's legal costs. Costs may outweigh the amount claimed.</td></tr>
+      <tr><td><b>Limitation of actions</b></td><td>Am I still within time?</td><td>If the time limit has passed, the claim may be <b>barred</b>. Set by the <i>Limitation of Actions Act 1958</i> (Vic).</td></tr>
+      <tr><td><b>Enforcement issues</b></td><td>If I win, will I actually get the remedy?</td><td>A defendant with no money or assets may be unable to pay — the win may be worthless.</td></tr></table>
+      <p class="muted">Exam note (2025 report): when a question asks about <b>enforcement issues</b>, answers about cost, time or limitation of actions earned little or nothing. Answer the factor you are asked about.</p>`},
+    {type:'rule', title:'Limitation periods (common examples)', html:`
+      <p>Generally <b>6 years</b> for breach of contract and most torts (e.g. property damage).</p>
+      <p>Personal injury: generally <b>3 years</b> from when the injury was discovered.</p>
+      <p>Defamation: generally <b>1 year</b> from publication.</p>
+      <p><b>Why have time limits?</b> Evidence deteriorates and memories fade; defendants shouldn't face a claim hanging over them forever. Courts may extend some periods in limited circumstances.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'Agu and Kim consider whether Emma, now in prison, has any assets to pay for their rebuilding.', why:'Enforcement issues. (2025 scenario.)'},
+        {text:'Vanderstock and Davies had to weigh legal fees, High Court filing fees and the risk of an adverse costs order before suing Victoria.', why:'Costs — partly offset because the Commonwealth supported them. (2024 exam scenario.)'}],
+      nonexamples:[
+        {text:'"Limitation of actions means the court limits how much compensation can be awarded."', why:'No — it is a time limit on starting a claim.'},
+        {text:'"Enforcement issues means police enforce the judgment."', why:'No — it is about whether the plaintiff can practically recover the remedy.'},
+        {text:'"Negotiation is one of the study design\'s factors to consider before initiating a claim."', why:'No — the study design lists costs, limitation of actions and enforcement issues. Negotiation is a sensible step, but not one of the three.'}]}
+  ],
+  worked:[
+    {title:'Applying a factor', prompt:'Explain one factor Agu and Kim should consider before suing Emma. (2025 scenario)',
+     steps:['Pick one factor: enforcement issues (2025 Section B Q1d).','Explain it: even if they win, they need Emma to be able to pay the damages.','Apply the sources: all of Emma\'s assets were seized as proceeds of crime, and her category 2 offences mean imprisonment — so no income either.','Consequence: they may pay hefty legal fees and recover nothing.'],
+     answer:'<b>Enforcement issues</b>: with her assets seized and no income in prison, Emma is unlikely to be able to pay, so a successful claim may bring Agu and Kim no actual compensation.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'Liam was injured at a gym in 2019. He discovered the injury straight away. It is now 2026 and he wants to sue.',
+     given:['Factor to check: the time limit for personal injury.','Personal injury is generally 3 years from discovery; about 7 years have passed.'],
+     item:{id:'U3A2-02-f1', type:'mc', q:'So which factor is the main obstacle?', options:['Limitation of actions','Enforcement issues','Costs','Class actions'], answer:0, explain:'The time limit has likely expired.', hint:'Time limit.'}}
+  ],
+  practice:[
+    {id:'U3A2-02-p1', type:'mc', q:'Which factor asks whether the defendant can actually pay if the plaintiff wins?', options:['Enforcement issues','Limitation of actions','Costs','Mediation'], answer:0, explain:'Enforcement issues.'},
+    {id:'U3A2-02-p2', type:'text', q:'The time limit within which a civil claim must be started is called the limitation of ______.', accept:['actions','action'], explain:'Limitation of actions.'},
+    {id:'U3A2-02-p3', type:'mc', q:'Generally, the limitation period for breach of contract in Victoria is:', options:['6 years','1 year','3 months','No limit'], answer:0, explain:'6 years.'},
+    {id:'U3A2-02-p4', type:'tf', q:'In civil cases, the losing party is often ordered to pay much of the winning party\'s legal costs.', answer:true, explain:'True — a major cost risk.'},
+    {id:'U3A2-02-p5', type:'mc', q:'Which is NOT one of the three factors to consider before initiating a civil claim in the study design?', options:['Negotiation','Costs','Limitation of actions','Enforcement issues'], answer:0, explain:'The three are costs, limitation of actions and enforcement issues.'},
+    {id:'U3A2-02-p6', type:'mc', q:'Why do limitation periods exist?', options:['Evidence deteriorates over time','To raise court revenue','To stop defendants appealing','To give juries less work'], answer:0, explain:'Evidence and fairness to defendants.'}
+  ],
+  check:[
+    {id:'U3A2-02-c1', type:'mc', q:'Which list contains the three factors in the study design?', options:['Costs, limitation of actions, enforcement issues','Mediation, conciliation, arbitration, VCAT','Damages, injunctions, costs, time','Burden, standard, liability, remedy'], answer:0, explain:'Costs, limitation of actions, enforcement issues.'},
+    {id:'U3A2-02-c2', type:'mc', q:'Agu and Kim worry Emma has no assets. Which factor?', options:['Enforcement issues','Limitation of actions','Costs','Class actions'], answer:0, src:'2025 Sec B Q1d', explain:'Enforcement.'},
+    {id:'U3A2-02-c3', type:'tf', q:'An adverse costs order means the losing party may have to pay some or all of the winning party\'s legal costs.', answer:true, src:'2024 Sec B Q2e', explain:'True — a key part of the costs factor.'},
+    {id:'U3A2-02-c4', type:'text', q:'Which Victorian Act sets limitation periods? The Limitation of Actions Act ______ (year).', accept:['1958'], explain:'1958.'},
+    {id:'U3A2-02-c5', type:'mc', q:'Which is the best description of the "costs" factor?', options:['Legal fees plus the risk of paying the other side\'s costs if you lose','The amount of damages claimed','The fine imposed on the defendant','The cost of imprisonment'], answer:0, explain:'Fees + adverse costs risk.'}
+  ]
+},
+
+/* ============================================================ U3A2-03 */
+{ id:'U3A2-03', area:'Unit 3 AOS 2 · Civil justice system', title:'Mediation, conciliation and arbitration',
+  kk:'The purposes and appropriateness of dispute resolution methods: mediation, conciliation and arbitration',
+  pretrain:[
+    {term:'Mediation', def:'An independent third party (mediator) <span class="key">helps the parties reach their own resolution</span>. The mediator does <span class="key">not</span> make suggestions or decisions.'},
+    {term:'Conciliation', def:'An independent third party (conciliator) helps the parties reach a resolution and <span class="key">can make suggestions</span> — but does not decide.'},
+    {term:'Arbitration', def:'An independent third party (arbitrator) <span class="key">makes a binding decision</span> (an arbitral award) after hearing both sides.'}
+  ],
+  teach:[
+    {type:'diagram', title:'How much power does the third party have?', svg:SVG_ADR, caption:'Moving right, the third party has more control and the parties have less.'},
+    {type:'rule', title:'Purposes and when each is appropriate', html:`
+      <table class="mini"><tr><th>Method</th><th>Purpose</th><th>Appropriate when…</th><th>Not appropriate when…</th></tr>
+      <tr><td><b>Mediation</b></td><td>Help the parties find their <b>own</b> solution</td><td>Parties want to preserve a relationship; willing to compromise</td><td>Power imbalance; family violence; one party won't cooperate</td></tr>
+      <tr><td><b>Conciliation</b></td><td>Help the parties resolve it, using the conciliator's <b>expertise</b></td><td>Parties need guidance from someone who knows the area</td><td>Power imbalance; parties want a binding decision</td></tr>
+      <tr><td><b>Arbitration</b></td><td>Give a <b>binding</b>, final decision, usually faster and more private than court</td><td>Parties can't agree but want a decision without a full trial</td><td>Complex legal questions; parties want to appeal on the merits</td></tr></table>
+      <p>Mediated and conciliated outcomes are generally binding <b>only if the parties sign a settlement agreement</b>.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'A mediator listens to two neighbours about a fence and helps them agree to share the cost.', why:'Mediation — they decide.'},
+        {text:'A conciliator at CAV suggests a retailer offer a partial refund.', why:'Conciliation — suggestions allowed.'},
+        {text:'A Magistrates\' Court arbitrator hears a $6,000 claim and makes an award.', why:'Arbitration — a binding decision.'}],
+      nonexamples:[
+        {text:'"The mediator decided the landlord must pay $2,000."', why:'Mediators don\'t decide.'},
+        {text:'"Conciliation produces a binding decision imposed by the conciliator."', why:'Conciliators only suggest.'},
+        {text:'"Negotiation is a form of arbitration."', why:'Negotiation has no third party at all.'}]}
+  ],
+  worked:[
+    {title:'Choosing a method', prompt:'Two business partners want to keep working together but disagree about profit sharing. Which method is most appropriate?',
+     steps:['Key fact: they want to preserve the relationship.','Methods where parties keep control → mediation or conciliation.','Neither needs specialist advice → mediation fits.','Arbitration would impose a decision and may harm the relationship.'],
+     answer:'<b>Mediation</b> — the parties stay in control and can preserve their working relationship.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A consumer and a car dealer can\'t agree after several meetings. Both want someone to make a final, binding decision without a full court trial.',
+     given:['They have already tried to reach agreement and failed.','They want a binding decision from a third party.'],
+     item:{id:'U3A2-03-f1', type:'text', q:'So which method fits? (one word)', accept:['arbitration','arbitrate'], explain:'Arbitration gives a binding decision.', hint:'Third party decides.'}}
+  ],
+  practice:[
+    {id:'U3A2-03-p1', type:'mc', q:'In which method does the third party make a binding decision?', options:['Arbitration','Mediation','Conciliation','Negotiation'], answer:0, explain:'Arbitration.'},
+    {id:'U3A2-03-p2', type:'mc', q:'Which third party can make suggestions but not decide?', options:['Conciliator','Mediator','Arbitrator','Judge'], answer:0, explain:'Conciliator.'},
+    {id:'U3A2-03-p3', type:'tf', q:'A mediator can tell the parties what the outcome should be.', answer:false, explain:'False — mediators facilitate only.'},
+    {id:'U3A2-03-p4', type:'mc', q:'When is mediation least appropriate?', options:['Where there is a significant power imbalance between the parties','Where parties want to preserve a relationship','Where parties are willing to compromise','Where the dispute is simple'], answer:0, explain:'Power imbalance.'},
+    {id:'U3A2-03-p5', type:'text', q:'The decision made by an arbitrator is called an arbitral ______.', accept:['award'], explain:'Award.'},
+    {id:'U3A2-03-p6', type:'mc', q:'Which method gives the parties the MOST control over the outcome?', options:['Mediation','Arbitration','Conciliation','A court hearing'], answer:0, explain:'Mediation (of those with a third party).'}
+  ],
+  check:[
+    {id:'U3A2-03-c1', type:'mc', q:'Which correctly matches method and third-party role?', options:['Mediation — facilitates; conciliation — suggests; arbitration — decides','Mediation — decides; conciliation — facilitates; arbitration — suggests','All three decide','None of them involve a third party'], answer:0, explain:'Facilitate / suggest / decide.'},
+    {id:'U3A2-03-c2', type:'mc', q:'A Magistrates\' Court hears a small claim using an arbitrator who makes a binding award. This is:', options:['Arbitration','Mediation','Conciliation','Negotiation'], answer:0, explain:'Arbitration.'},
+    {id:'U3A2-03-c3', type:'tf', q:'Mediated agreements are generally binding only if the parties sign a settlement agreement.', answer:true, explain:'True.'},
+    {id:'U3A2-03-c4', type:'text', q:'Which method uses a third party with expertise who can suggest solutions? (one word)', accept:['conciliation','conciliate'], explain:'Conciliation.'},
+    {id:'U3A2-03-c5', type:'mc', q:'Which situation is LEAST suited to mediation?', options:['A dispute involving family violence','Neighbours arguing about a tree','Business partners disagreeing about profits','Siblings arguing about a car'], answer:0, explain:'Power imbalance and safety concerns.'}
+  ]
+},
+
+/* ============================================================ U3A2-04 */
+{ id:'U3A2-04', area:'Unit 3 AOS 2 · Civil justice system', title:'Consumer Affairs Victoria',
+  kk:'The role of Consumer Affairs Victoria in resolving civil disputes',
+  pretrain:[
+    {term:'Consumer Affairs Victoria (CAV)', def:'A Victorian government body that provides <span class="key">free</span> information, advice and dispute resolution for <span class="key">consumer and tenancy</span> disputes.'},
+    {term:'Consumer', def:'A person who buys goods or services for personal use.'},
+    {term:'Australian Consumer Law', def:'National law setting out consumer rights — e.g. goods must be of acceptable quality.'}
+  ],
+  teach:[
+    {type:'rule', title:'What CAV does', html:`
+      <p>① <b>Information and advice</b> — about consumer and tenancy rights (website, phone).</p>
+      <p>② <b>Dispute resolution</b> — CAV can help resolve eligible disputes between consumers and traders, and between tenants and landlords, mainly through <b>conciliation</b> (by phone or in writing).</p>
+      <p>③ CAV <b>cannot force</b> a party to take part, and <b>cannot make a binding decision</b> or award compensation.</p>
+      <p>If CAV can't resolve it, the dispute may go to <b>VCAT</b>.</p>`},
+    {type:'rule', title:'Strengths and weaknesses', html:`
+      <table class="mini"><tr><th>Strengths</th><th>Weaknesses</th></tr>
+      <tr><td><b>Free</b> → access, equality</td><td><b>Can't compel</b> a trader to participate</td></tr>
+      <tr><td>Informal, no lawyers needed</td><td><b>No binding decision</b> — may need VCAT anyway</td></tr>
+      <tr><td>Quick for simple disputes</td><td>Limited to certain kinds of disputes; may not handle complex claims</td></tr>
+      <tr><td>Information helps people engage on an informed basis → <b>access</b></td><td>Many people don't know CAV exists</td></tr></table>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'A consumer whose new laptop failed after a month phones CAV, which contacts the retailer and helps negotiate a replacement.', why:'CAV dispute assistance.'},
+        {text:'A tenant reads CAV\'s guide on bond refunds.', why:'Information → access.'}],
+      nonexamples:[
+        {text:'"CAV ordered the retailer to pay $3,000 compensation."', why:'CAV cannot make binding orders.'},
+        {text:'"CAV provides legal representation to accused people."', why:'No — that is VLA. The 2025 examiners noted students confusing these bodies.'},
+        {text:'"CAV hears personal injury claims."', why:'No — consumer and tenancy disputes.'}]}
+  ],
+  worked:[
+    {title:'Evaluating CAV', prompt:'Ava\'s new fridge broke. The retailer refuses to help. Evaluate CAV as a way for Ava to resolve this.',
+     steps:['Strength: free and informal → Ava doesn\'t need a lawyer (access).','Strength: CAV conciliators know consumer law and can suggest a fair outcome.','Weakness: if the retailer refuses to participate, CAV can\'t force it.','Weakness: no binding decision — Ava may still need to go to VCAT.'],
+     answer:'CAV is a <b>free, accessible first step</b>, but its lack of <b>compulsion</b> and <b>binding power</b> means Ava may need VCAT.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A trader ignores all of CAV\'s attempts to contact them about a customer\'s complaint.',
+     given:['CAV relies on voluntary participation.'],
+     item:{id:'U3A2-04-f1', type:'mc', q:'What is the customer\'s most likely next step?', options:['Apply to VCAT','Ask CAV to fine the trader','Ask CAV for a binding order','Report it to the jury'], answer:0, explain:'VCAT can make binding orders.', hint:'Which body can make binding decisions in consumer disputes?'}}
+  ],
+  practice:[
+    {id:'U3A2-04-p1', type:'tf', q:'CAV\'s dispute assistance is free.', answer:true, explain:'True.'},
+    {id:'U3A2-04-p2', type:'tf', q:'CAV can make binding orders requiring a trader to pay compensation.', answer:false, explain:'False.'},
+    {id:'U3A2-04-p3', type:'mc', q:'Which types of disputes does CAV mainly help with?', options:['Consumer and tenancy disputes','Criminal trials','Personal injury claims','Defamation'], answer:0, explain:'Consumer and tenancy.'},
+    {id:'U3A2-04-p4', type:'mc', q:'Which method does CAV mainly use?', options:['Conciliation','Arbitration','Jury trial','Mediation by a judge'], answer:0, explain:'Conciliation.'},
+    {id:'U3A2-04-p5', type:'mc', q:'A key weakness of CAV is that it:', options:['Cannot compel a party to participate','Is very expensive','Requires lawyers','Only hears criminal cases'], answer:0, explain:'No compulsion.'},
+    {id:'U3A2-04-p6', type:'mc', q:'CAV\'s free information most directly supports:', options:['Access','Specialisation','Deterrence','Openness'], answer:0, explain:'Informed basis → access.'}
+  ],
+  check:[
+    {id:'U3A2-04-c1', type:'mc', q:'Which statement about CAV is correct?', options:['It provides free information and dispute assistance but cannot make binding decisions','It is a court that hears consumer cases','It provides grants of legal aid','It awards damages'], answer:0, explain:'Correct.'},
+    {id:'U3A2-04-c2', type:'text', q:'CAV stands for Consumer ______ Victoria.', accept:['affairs'], explain:'Affairs.'},
+    {id:'U3A2-04-c3', type:'mc', q:'If CAV cannot resolve a consumer dispute, where may it go next?', options:['VCAT','The Court of Appeal','The High Court','The Koori Court'], answer:0, explain:'VCAT.'},
+    {id:'U3A2-04-c4', type:'tf', q:'CAV and Victoria Legal Aid are the same body.', answer:false, explain:'False.'},
+    {id:'U3A2-04-c5', type:'mc', q:'Which is a strength of CAV in terms of the principles of justice?', options:['Being free supports equality and access','It guarantees impartial binding decisions','It provides a jury','It hears appeals'], answer:0, explain:'Free → access, equality.'}
+  ]
+},
+
+/* ============================================================ U3A2-05 */
+{ id:'U3A2-05', area:'Unit 3 AOS 2 · Civil justice system', title:'VCAT',
+  kk:'The role of the Victorian Civil and Administrative Tribunal in resolving civil disputes',
+  pretrain:[
+    {term:'Tribunal', def:'A dispute resolution body that is <span class="key">less formal</span> than a court.'},
+    {term:'VCAT', def:'The <span class="key">Victorian Civil and Administrative Tribunal</span>. It resolves a wide range of civil disputes in <span class="key">lists</span> (e.g. Civil Claims, Residential Tenancies).'},
+    {term:'Member', def:'The person who hears and decides a VCAT case.'},
+    {term:'Binding order', def:'A decision the parties <span class="key">must</span> follow; it can be enforced.'}
+  ],
+  teach:[
+    {type:'rule', title:'How VCAT works', html:`
+      <p>① <b>Informal and quick</b> — simpler procedures than courts; rules of evidence don't strictly apply.</p>
+      <p>② Parties generally <b>represent themselves</b> — lawyers usually need permission.</p>
+      <p>③ VCAT can use <b>mediation</b> and <b>compulsory conferences</b> to try to settle the dispute first.</p>
+      <p>④ If not settled, a <b>hearing</b>: the member makes a <b>binding, enforceable order</b>.</p>
+      <p>⑤ <b>Appeals</b> are limited: to the Supreme Court, on a <b>question of law</b> only, and with permission.</p>
+      <p>⑥ Fees are low compared with courts (and depend on the claim).</p>`},
+    {type:'contrast', title:'VCAT compared with CAV and courts',
+      examples:[
+        {text:'A tenant applies to VCAT\'s Residential Tenancies List for return of her bond; the member orders the landlord to pay.', why:'Binding order — something CAV can\'t do.'},
+        {text:'Parties in a building dispute attend a VCAT compulsory conference and settle.', why:'VCAT using dispute resolution before a hearing.'}],
+      nonexamples:[
+        {text:'"VCAT decisions can be appealed on any ground."', why:'Only on a question of law, with permission.'},
+        {text:'"VCAT has a jury."', why:'No — a member decides.'},
+        {text:'"VCAT is a court."', why:'It is a tribunal — less formal than a court.'}]},
+    {type:'rule', title:'Strengths and weaknesses', html:`
+      <table class="mini"><tr><th>Strengths</th><th>Weaknesses</th></tr>
+      <tr><td>Low cost; no lawyers needed → <b>access</b></td><td>Unrepresented parties may face a better-resourced opponent → <b>equality</b></td></tr>
+      <tr><td>Binding orders → disputes are actually resolved</td><td>Limited appeal rights</td></tr>
+      <tr><td>Members have expertise in their list → specialisation</td><td>Delays in some lists (e.g. high-volume lists)</td></tr>
+      <tr><td>Hearings generally public → <b>fairness</b> (openness)</td><td>Enforcing an order may require going to a court</td></tr></table>`}
+  ],
+  worked:[
+    {title:'Choosing between CAV and VCAT', prompt:'Ava tried CAV but the retailer still refuses to replace her fridge. Why might VCAT be appropriate?',
+     steps:['Problem with CAV: no binding decision.','VCAT can make a binding, enforceable order.','VCAT is low cost and informal → Ava doesn\'t need a lawyer.','VCAT may first try mediation; if that fails, a member decides.'],
+     answer:'VCAT is appropriate because it can make a <b>binding order</b> at <b>low cost</b>, without lawyers.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'After a VCAT hearing, a landlord is unhappy with the member\'s decision and wants to appeal because he thinks the member weighed the evidence wrongly.',
+     given:['VCAT appeals go to the Supreme Court.','They are only allowed on a question of law, with permission.'],
+     item:{id:'U3A2-05-f1', type:'tf', q:'So the landlord can appeal simply because he disagrees with how the evidence was weighed.', answer:false, explain:'False — he needs an error of law.', hint:'What ground is required?'}}
+  ],
+  practice:[
+    {id:'U3A2-05-p1', type:'text', q:'The person who hears and decides a VCAT case is a ______.', accept:['member','vcat member','tribunal member'], explain:'Member.'},
+    {id:'U3A2-05-p2', type:'tf', q:'VCAT can make binding orders.', answer:true, explain:'True.'},
+    {id:'U3A2-05-p3', type:'mc', q:'Appeals from VCAT are generally:', options:['To the Supreme Court on a question of law, with permission','To CAV on any ground','To the County Court on the facts','Not possible at all'], answer:0, explain:'Question of law, Supreme Court, permission.'},
+    {id:'U3A2-05-p4', type:'mc', q:'Which is a strength of VCAT?', options:['Low cost and informal procedures','Jury trials','Unlimited appeals','Lawyers are always provided free'], answer:0, explain:'Low cost, informal.'},
+    {id:'U3A2-05-p5', type:'tf', q:'At VCAT, parties generally represent themselves.', answer:true, explain:'True — lawyers usually need permission.'},
+    {id:'U3A2-05-p6', type:'mc', q:'VCAT organises disputes into:', options:['Lists','Divisions of the High Court','Juries','Circuits'], answer:0, explain:'Lists.'}
+  ],
+  check:[
+    {id:'U3A2-05-c1', type:'mc', q:'The key difference between CAV and VCAT is that VCAT:', options:['Can make binding decisions','Is free','Uses a jury','Only gives information'], answer:0, explain:'Binding decisions.'},
+    {id:'U3A2-05-c2', type:'text', q:'VCAT is a ______, not a court. (one word)', accept:['tribunal'], explain:'Tribunal.'},
+    {id:'U3A2-05-c3', type:'tf', q:'VCAT may use mediation before holding a hearing.', answer:true, explain:'True.'},
+    {id:'U3A2-05-c4', type:'mc', q:'Which is a weakness of VCAT linked to equality?', options:['A self-represented party may face a better-resourced opponent','It is too expensive','It always uses juries','It has no expertise'], answer:0, explain:'Imbalance of resources.'},
+    {id:'U3A2-05-c5', type:'mc', q:'Which dispute is most suited to VCAT?', options:['A tenant seeking return of a bond','A murder trial','A class action against a bank by thousands of people','An appeal from the County Court'], answer:0, explain:'Tenancy dispute.'}
+  ]
+},
+
+/* ============================================================ U3A2-06 */
+{ id:'U3A2-06', area:'Unit 3 AOS 2 · Civil justice system', title:'The courts in civil cases',
+  kk:'The reasons for the Victorian court hierarchy in determining civil disputes, including administrative convenience and appeals; the appropriateness of the courts',
+  pretrain:[
+    {term:'Original jurisdiction', def:'The power to hear a case <span class="key">for the first time</span>.'},
+    {term:'Appellate jurisdiction', def:'The power to hear an <span class="key">appeal</span>.'},
+    {term:'Administrative convenience', def:'Allocating cases to courts by <span class="key">size and complexity</span>, so each court\'s workload, resources and procedures match the cases it hears.'},
+    {term:'Mediation (court-ordered)', def:'Courts often <span class="key">order</span> the parties to attend mediation before a trial.'}
+  ],
+  teach:[
+    {type:'diagram', title:'Civil jurisdiction', svg:SVG_CIVIL_COURTS, caption:'The more money claimed or the more complex the case, the higher the court.'},
+    {type:'rule', title:'Why a hierarchy? Administrative convenience and appeals', html:`
+      <p><span class="key">Watch the switch:</span> for <b>criminal</b> cases the study design says <b>specialisation and appeals</b>; for <b>civil</b> disputes it says <b>administrative convenience and appeals</b>.</p>
+      <p><b>Administrative convenience:</b> cases are spread across courts by size and complexity — small claims in the Magistrates' Court, large or complex ones in the County or Supreme Court. This spreads the workload, uses resources sensibly (judges' time, court fees, procedures matched to the case) and reduces delay.</p>
+      <p><b>Appeals:</b> a dissatisfied party can ask a higher court to review a decision (e.g. on an error of law) → errors corrected → <b>fairness</b>.</p>
+      <p><b>Also:</b> higher courts' decisions become precedents that lower courts must follow (Unit 4 link).</p>`},
+    {type:'rule', title:'When is a court appropriate?', html:`
+      <p><b>Appropriate:</b> large or complex claims; legal precedent needed; the other party won't cooperate; a <b>binding, enforceable</b> decision with full appeal rights is needed; class actions (Supreme Court).</p>
+      <p><b>Less appropriate:</b> small claims (costs may exceed the claim); parties want privacy or to preserve a relationship; the dispute suits CAV or VCAT.</p>
+      <p>Courts can also order <b>mediation</b> — most civil cases settle before trial.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'Thousands of small debt claims are dealt with quickly in the Magistrates\' Court, leaving County and Supreme Court judges free for large, complex disputes.', why:'Administrative convenience.'},
+        {text:'A defendant appeals a County Court civil decision to the Court of Appeal on an error of law.', why:'Appeals.'}],
+      nonexamples:[
+        {text:'"A $20,000 claim must go to the Supreme Court."', why:'It can be heard in the Magistrates\' Court (up to $100,000).'},
+        {text:'"Courts are always the best way to resolve civil disputes."', why:'Not for small claims or where relationships matter.'},
+        {text:'"The reasons for the civil court hierarchy are specialisation and appeals."', why:'That is the criminal pairing. For civil disputes: administrative convenience and appeals.'}]}
+  ],
+  worked:[
+    {title:'Picking a court', prompt:'Sophie claims $60,000 from a builder for defective work. Which court has jurisdiction, and is a court appropriate?',
+     steps:['Amount: $60,000 → within the Magistrates\' Court limit ($100,000).','Alternatives: VCAT also hears building disputes, often more cheaply.','Court appropriate if: the builder won\'t cooperate and Sophie wants full appeal rights.','Less appropriate if: cost and speed matter most → VCAT.'],
+     answer:'<b>Magistrates\' Court</b> has jurisdiction; VCAT may be a cheaper alternative.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A company claims $5 million from another company over a complex contract.',
+     given:['Amount: far above $100,000.','Complex commercial dispute.'],
+     item:{id:'U3A2-06-f1', type:'mc', q:'So which court is most suitable?', options:['Supreme Court (or County Court)','Magistrates\' Court','VCAT Civil Claims List','CAV'], answer:0, explain:'Unlimited jurisdiction; complex commercial expertise.', hint:'Unlimited jurisdiction.'}}
+  ],
+  practice:[
+    {id:'U3A2-06-p1', type:'mc', q:'The Magistrates\' Court can hear civil claims up to:', options:['$100,000','$10,000','$1 million','Unlimited'], answer:0, explain:'$100,000.'},
+    {id:'U3A2-06-p2', type:'mc', q:'Which courts have unlimited civil jurisdiction?', options:['County Court and Supreme Court','Magistrates\' Court only','VCAT and CAV','Koori Court'], answer:0, explain:'County and Supreme.'},
+    {id:'U3A2-06-p3', type:'text', q:'The power to hear a case for the first time is called ______ jurisdiction.', accept:['original'], explain:'Original.'},
+    {id:'U3A2-06-p4', type:'mc', q:'Small claims go to the Magistrates\' Court and complex claims to higher courts, so each court\'s workload and resources suit its cases. This reason for the hierarchy is:', options:['Administrative convenience','Appeals','Specialisation of juries','Precedent'], answer:0, explain:'Administrative convenience.'},
+    {id:'U3A2-06-p5', type:'mc', q:'Which is a reason a court may NOT be appropriate?', options:['The cost may exceed the amount claimed','It gives a binding decision','There are appeal rights','Judges are experts'], answer:0, explain:'Cost.'},
+    {id:'U3A2-06-p6', type:'mc', q:'Which court hears appeals from the County Court in civil cases?', options:['Court of Appeal','Magistrates\' Court','VCAT','CAV'], answer:0, explain:'Court of Appeal.'}
+  ],
+  check:[
+    {id:'U3A2-06-c1', type:'mc', q:'The study design names two reasons for the court hierarchy in determining CIVIL disputes. They are:', options:['Administrative convenience and appeals','Specialisation and appeals','Juries and sanctions','Mediation and negotiation'], answer:0, explain:'Administrative convenience and appeals. (Specialisation and appeals is the criminal pairing.)'},
+    {id:'U3A2-06-c2', type:'text', q:'The power to hear an appeal is called ______ jurisdiction.', accept:['appellate'], explain:'Appellate.'},
+    {id:'U3A2-06-c3', type:'mc', q:'A $40,000 debt claim could be heard first in the:', options:['Magistrates\' Court','Court of Appeal','High Court','Koori Court'], answer:0, explain:'Within $100,000.'},
+    {id:'U3A2-06-c4', type:'tf', q:'Courts can order parties to attend mediation.', answer:true, explain:'True.'},
+    {id:'U3A2-06-c5', type:'mc', q:'When is a court most appropriate?', options:['A complex, high-value dispute where a binding, appealable decision is needed','A small dispute between friends who want to stay friends','A dispute the parties want kept private','A $300 refund'], answer:0, explain:'Complex, high value.'}
+  ]
+},
+
+/* ============================================================ U3A2-07 */
+{ id:'U3A2-07', area:'Unit 3 AOS 2 · Civil justice system', title:'Judge or magistrate, and the jury, in a civil dispute',
+  kk:'The roles of key personnel in a civil dispute, including the judge or magistrate (including the role of case management) and the jury',
+  pretrain:[
+    {term:'Civil jury', def:'<span class="key">Six</span> jurors, available in the County and Supreme Courts if a party <span class="key">requests and pays</span> for one.'},
+    {term:'Case management', def:'The judge\'s active control of a case — setting timetables and giving <span class="key">directions</span> — so it runs efficiently.'},
+    {term:'Liability', def:'Whether the defendant is legally responsible.'}
+  ],
+  teach:[
+    {type:'rule', title:'The judge', html:`
+      <p>① <b>Case management</b> — give directions, set timetables, order mediation, keep the case moving (<i>Civil Procedure Act 2010</i>).</p>
+      <p>② <b>Impartial umpire</b> — ensure fair procedures are followed.</p>
+      <p>③ <b>Decide questions of law</b>, including admissibility of evidence.</p>
+      <p>④ If there is a jury: <b>give directions</b> and sum up.</p>
+      <p>⑤ If there is <b>no jury</b> (most civil cases): decide <b>liability</b> and the <b>remedy</b>.</p>
+      <p>A <b>magistrate</b> in the Magistrates' Court has the same roles, including case management, but there is never a civil jury in that court.</p>`},
+    {type:'rule', title:'The civil jury', html:`
+      <table class="mini"><tr><th></th><th>Criminal jury</th><th>Civil jury</th></tr>
+      <tr><td>Size</td><td>12</td><td><b>6</b></td></tr>
+      <tr><td>When?</td><td>Indictable offence + not guilty plea</td><td>A party <b>requests and pays</b> (County/Supreme only)</td></tr>
+      <tr><td>Decides</td><td>Guilty / not guilty</td><td><b>Liable / not liable</b>, and may decide <b>damages</b> if asked</td></tr>
+      <tr><td>Standard</td><td>Beyond reasonable doubt</td><td>Balance of probabilities</td></tr>
+      <tr><td>Majority</td><td>11 of 12</td><td><b>5 of 6</b> (after at least 3 hours)</td></tr></table>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'Andy requests a jury for his civil claim against Grant in the County Court and pays the fee.', why:'Civil jury of six. (2025 scenario.)'},
+        {text:'A Supreme Court judge orders the parties to attend mediation before trial.', why:'Case management.'}],
+      nonexamples:[
+        {text:'"Every civil case has a jury."', why:'No — only if requested and paid for; most civil cases have no jury.'},
+        {text:'"The civil jury decides guilt."', why:'Civil juries decide liability.'},
+        {text:'"There are civil juries in the Magistrates\' Court."', why:'No — County and Supreme only.'}]}
+  ],
+  worked:[
+    {title:'Who decides?', prompt:'In Andy\'s County Court claim against Grant, no jury is requested. Who decides liability and damages?',
+     steps:['No jury requested → judge alone.','Judge decides liability on the balance of probabilities.','If liable, the judge decides the remedy (damages).'],
+     answer:'The <b>judge</b> decides both <b>liability</b> and <b>damages</b>.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A civil jury has deliberated for 4 hours. Five jurors think the defendant is liable; one does not.',
+     given:['Civil juries have 6 members.','Majority verdicts are allowed after a certain period.'],
+     item:{id:'U3A2-07-f1', type:'mc', q:'So can the jury deliver a verdict?', options:['Yes — a 5:1 majority verdict','No — it must be unanimous','No — the judge must decide instead','Yes — but only a "guilty" verdict'], answer:0, explain:'5 of 6 after at least 3 hours.', hint:'How many of 6?'}}
+  ],
+  practice:[
+    {id:'U3A2-07-p1', type:'text', q:'How many jurors sit on a civil jury in Victoria?', accept:['6','six'], explain:'Six.'},
+    {id:'U3A2-07-p2', type:'tf', q:'Most civil cases are decided by a judge without a jury.', answer:true, explain:'True.'},
+    {id:'U3A2-07-p3', type:'mc', q:'Which is a civil judge\'s case management role?', options:['Setting timetables and ordering mediation','Deciding guilt','Choosing the plaintiff\'s lawyer','Imposing a sanction'], answer:0, explain:'Case management.'},
+    {id:'U3A2-07-p4', type:'mc', q:'A civil jury decides:', options:['Whether the defendant is liable (and may assess damages)','Whether the accused is guilty','The sentence','Questions of law'], answer:0, explain:'Liability.'},
+    {id:'U3A2-07-p5', type:'mc', q:'Who pays for a civil jury?', options:['The party who requests it','The state','The judge','The jurors'], answer:0, explain:'Requesting party.'},
+    {id:'U3A2-07-p6', type:'tf', q:'Civil juries are available in the Magistrates\' Court.', answer:false, explain:'False.'}
+  ],
+  check:[
+    {id:'U3A2-07-c1', type:'mc', q:'Which correctly compares criminal and civil juries?', options:['Criminal 12, civil 6','Criminal 6, civil 12','Both 12','Both 6'], answer:0, explain:'12 vs 6.'},
+    {id:'U3A2-07-c2', type:'text', q:'A civil majority verdict needs ___ of 6 jurors. (number)', accept:['5','five'], explain:'5 of 6.'},
+    {id:'U3A2-07-c3', type:'mc', q:'Which Act gives civil judges case management powers and sets the overarching purpose?', options:['Civil Procedure Act 2010','Sentencing Act 1991','Juries Act 2000 only','Victims\' Charter Act 2006'], answer:0, explain:'Civil Procedure Act 2010.'},
+    {id:'U3A2-07-c4', type:'tf', q:'If there is no jury, the judge decides liability and the remedy.', answer:true, explain:'True.'},
+    {id:'U3A2-07-c5', type:'mc', q:'Which is NOT a role of the judge in a civil trial?', options:['Deciding liability when a jury has been empanelled','Case management','Deciding admissibility of evidence','Giving directions to the jury'], answer:0, explain:'With a jury, the jury decides liability.'}
+  ]
+},
+
+/* ============================================================ U3A2-08 */
+{ id:'U3A2-08', area:'Unit 3 AOS 2 · Civil justice system', title:'The parties and legal practitioners',
+  kk:'The roles of key personnel in a civil case: the parties and legal practitioners',
+  pretrain:[
+    {term:'Pleadings', def:'Documents that set out each party\'s <span class="key">claims and defences</span> — e.g. the statement of claim and the defence.'},
+    {term:'Discovery', def:'Each party must <span class="key">disclose relevant documents</span> to the other.'},
+    {term:'Overarching obligations', def:'Duties under the <i>Civil Procedure Act 2010</i> — e.g. act <span class="key">honestly</span>, cooperate, don\'t mislead, keep costs proportionate.'}
+  ],
+  teach:[
+    {type:'rule', title:'Roles of the parties', html:`
+      <table class="mini"><tr><th>Plaintiff</th><th>Defendant</th></tr>
+      <tr><td>Starts the claim (statement of claim)</td><td>Responds (defence; may counterclaim)</td></tr>
+      <tr><td>Bears the <b>burden of proof</b> — must prove the claim on the balance of probabilities</td><td>Doesn't have to prove anything, but may present evidence to rebut</td></tr>
+      <tr><td colspan="2"><b>Both:</b> comply with <b>overarching obligations</b>; take part in <b>discovery</b>; present evidence and question witnesses; may <b>settle</b> at any time</td></tr></table>`},
+    {type:'rule', title:'Why legal practitioners are needed', html:`
+      <p>① <b>Complex procedures</b> — pleadings, discovery, rules of evidence.</p>
+      <p>② <b>Objectivity</b> — parties are emotionally involved.</p>
+      <p>③ <b>Effective presentation</b> — skilled questioning and argument.</p>
+      <p>④ <b>Equality</b> — a self-represented party may be disadvantaged against an opponent with a lawyer.</p>
+      <p>⑤ <b>Advice on settlement</b> — lawyers can judge whether an offer is reasonable.</p>
+      <p>Unlike the criminal system, there is <b>no Dietrich-type protection</b> in civil cases, and legal aid for civil matters is very limited.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'Louise\'s clients\' lawyer requests discovery of Louise\'s financial records.', why:'Discovery. (2024 scenario.)'},
+        {text:'A self-represented plaintiff misses a filing deadline and her claim is delayed.', why:'Shows need for legal practitioners.'}],
+      nonexamples:[
+        {text:'"The defendant must prove they are not liable."', why:'No — the plaintiff bears the burden.'},
+        {text:'"Parties can hide unhelpful documents."', why:'No — discovery obligations.'},
+        {text:'"Civil cases are adjourned if a party can\'t afford a lawyer (Dietrich)."', why:'Dietrich applies to serious criminal trials, not civil cases.'}]}
+  ],
+  worked:[
+    {title:'Explaining a role', prompt:'Explain one role of the plaintiff in Andy\'s civil claim against Grant. (2025 scenario)',
+     steps:['Name the role: bearing the burden of proof.','Explain: Andy must prove his claim.','Add the standard: on the balance of probabilities.','Link: Andy must show it is more probable than not that Grant caused his injuries and loss.'],
+     answer:'Andy bears the <b>burden of proof</b> and must prove his claim <b>on the balance of probabilities</b>.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'Before trial, the defendant hands the plaintiff all emails relevant to the dispute — including ones that hurt the defendant\'s case.',
+     given:['Each party must disclose relevant documents.'],
+     item:{id:'U3A2-08-f1', type:'text', q:'This process is called ______.', accept:['discovery','disclosure'], explain:'Discovery.', hint:'D…'}}
+  ],
+  practice:[
+    {id:'U3A2-08-p1', type:'mc', q:'Which party bears the burden of proof in a civil case?', options:['Plaintiff','Defendant','Both equally','The judge'], answer:0, explain:'Plaintiff.'},
+    {id:'U3A2-08-p2', type:'text', q:'Documents setting out each party\'s claims and defences are called ______.', accept:['pleadings','pleading'], explain:'Pleadings.'},
+    {id:'U3A2-08-p3', type:'mc', q:'Which is an overarching obligation under the Civil Procedure Act 2010?', options:['Act honestly','Always use a jury','Always go to trial','Never settle'], answer:0, explain:'Act honestly.'},
+    {id:'U3A2-08-p4', type:'tf', q:'Parties to a civil dispute can settle at any time before judgment.', answer:true, explain:'True.'},
+    {id:'U3A2-08-p5', type:'mc', q:'Which is a reason legal practitioners are needed in civil cases?', options:['Complex procedures such as pleadings and discovery','Judges refuse to hear self-represented parties','Juries only listen to lawyers','Lawyers decide liability'], answer:0, explain:'Complexity.'},
+    {id:'U3A2-08-p6', type:'tf', q:'Dietrich v The Queen protects unrepresented parties in civil cases.', answer:false, explain:'False — it applies to serious criminal trials.'}
+  ],
+  check:[
+    {id:'U3A2-08-c1', type:'mc', q:'Which is a role of both parties in a civil case?', options:['Complying with discovery obligations','Proving beyond reasonable doubt','Deciding the remedy','Sentencing'], answer:0, explain:'Discovery.'},
+    {id:'U3A2-08-c2', type:'text', q:'The document that starts the plaintiff\'s claim is the statement of ______.', accept:['claim'], explain:'Statement of claim.'},
+    {id:'U3A2-08-c3', type:'mc', q:'A self-represented defendant faces a large company with a legal team. Which principle is most at risk?', options:['Equality','Openness','Specialisation','Deterrence'], answer:0, explain:'Equality.'},
+    {id:'U3A2-08-c4', type:'tf', q:'The defendant must prove they are not liable.', answer:false, explain:'False.'},
+    {id:'U3A2-08-c5', type:'mc', q:'Which Act sets out overarching obligations for parties and lawyers in civil cases?', options:['Civil Procedure Act 2010','Evidence Act 2008','Sentencing Act 1991','Limitation of Actions Act 1958'], answer:0, explain:'Civil Procedure Act 2010.'}
+  ]
+},
+
+/* ============================================================ U3A2-09 */
+{ id:'U3A2-09', area:'Unit 3 AOS 2 · Civil justice system', title:'Class actions',
+  kk:'The use of class actions to resolve civil disputes',
+  pretrain:[
+    {term:'Class action', def:'A single proceeding brought by <span class="key">one person on behalf of a group</span> with similar claims against the same defendant. Also called a <span class="key">group proceeding</span>.'},
+    {term:'Lead plaintiff', def:'The person who brings the class action on behalf of the group.'},
+    {term:'Group members', def:'The other people with claims, who usually don\'t take an active part.'},
+    {term:'Litigation funder', def:'A company that <span class="key">pays the costs</span> of a class action in return for a <span class="key">share</span> of any money recovered.'}
+  ],
+  teach:[
+    {type:'rule', title:'Requirements (Supreme Court Act 1986 (Vic), Part 4A)', html:`
+      <p>① <b>Seven or more</b> people have claims against the same defendant.</p>
+      <p>② The claims arise out of the <b>same, similar or related circumstances</b>.</p>
+      <p>③ The claims give rise to at least one <b>substantial common question</b> of law or fact.</p>
+      <p>Group members are usually included automatically unless they <b>opt out</b>.</p>
+      <p><b>Which court?</b> The <b>Supreme Court</b> (or the Federal Court) — <span class="key">not the County Court</span>, which the 2024 examiners noted has no jurisdiction to hear a class action.</p>`},
+    {type:'rule', title:'Purposes', html:`
+      <table class="mini"><tr><th>Purpose</th><th>How</th><th>Principle</th></tr>
+      <tr><td>Improve <b>access</b></td><td>People with small claims who couldn't afford to sue alone can join</td><td>Access</td></tr>
+      <tr><td><b>Efficiency</b></td><td>One case instead of many; one set of evidence and witnesses</td><td>(reduces cost and delay)</td></tr>
+      <tr><td><b>Consistency</b></td><td>All group members get the same outcome on the common issues</td><td>Equality</td></tr>
+      <tr><td><b>Equalise power</b></td><td>A group can take on a large, well-resourced defendant</td><td>Equality</td></tr></table>
+      <p><b>Limitations:</b> lengthy; litigation funders and lawyers may take a significant share of the money; the lead plaintiff carries a costs risk; group members have little control.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'Thousands of car owners sue a manufacturer over faulty airbags in one proceeding.', why:'Class action.'},
+        {text:'Seven investors misled by the same financial adviser bring one claim together.', why:'Meets the minimum number.'}],
+      nonexamples:[
+        {text:'"Three neighbours with different complaints against different builders bring a class action."', why:'Fewer than seven, different defendants, different circumstances.'},
+        {text:'"Group members must all appear in court."', why:'No — the lead plaintiff runs the case.'},
+        {text:'"A class action is a criminal prosecution of a company."', why:'It is a civil proceeding.'}]}
+  ],
+  worked:[
+    {title:'Is a class action possible?', prompt:'Louise\'s 22 clients each lost money through the same investment scheme Louise ran. Could they bring a class action? (Based on 2024 scenario)',
+     steps:['Number: 22 → seven or more.','Same defendant: Louise; same or related circumstances: the same non-existent gold mine.','Common question: e.g. whether Louise misled her clients.','Now weigh appropriateness, not just eligibility: court, lead plaintiff, funding.'],
+     answer:'<b>Largely appropriate</b> — all three requirements appear met. But (2024 report): they planned to sue in the County Court, which can\'t hear class actions, so they\'d need the Supreme or Federal Court; someone must be willing to be lead plaintiff; and a $220,000 total claim may be too small to attract a litigation funder.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'Each of 500 phone customers was overcharged about $40 by the same company.',
+     given:['Requirements look satisfied: many people, same defendant, same conduct.','Each claim alone is very small.'],
+     item:{id:'U3A2-09-f1', type:'mc', q:'Which purpose of class actions is most relevant here?', options:['Access — small claims that wouldn\'t be worth suing alone','Punishment of the company','Deterrence of the jury','Specialisation of the court'], answer:0, explain:'Access.', hint:'Would anyone sue for $40 alone?'}}
+  ],
+  practice:[
+    {id:'U3A2-09-p1', type:'text', q:'How many people (minimum) must have claims for a class action in Victoria? (number)', accept:['7','seven'], explain:'Seven.'},
+    {id:'U3A2-09-p2', type:'mc', q:'The person who runs a class action on behalf of the group is the:', options:['Lead plaintiff','Litigation funder','Defendant','Judge'], answer:0, explain:'Lead plaintiff.'},
+    {id:'U3A2-09-p3', type:'mc', q:'A litigation funder:', options:['Pays the costs in return for a share of any money recovered','Decides the case','Represents the defendant','Is a type of juror'], answer:0, explain:'Funds for a share.'},
+    {id:'U3A2-09-p4', type:'tf', q:'Group members are usually included unless they opt out.', answer:true, explain:'True.'},
+    {id:'U3A2-09-p5', type:'mc', q:'Which is a limitation of class actions?', options:['Funders and lawyers may take a large share of the money','They are always quick','They only help defendants','Group members must each hire a lawyer'], answer:0, explain:'Share of recovery.'},
+    {id:'U3A2-09-p6', type:'mc', q:'Which is a purpose of class actions?', options:['Efficiency — one case instead of many','Punishing the defendant','Imprisoning company directors','Avoiding the courts'], answer:0, explain:'Efficiency.'}
+  ],
+  check:[
+    {id:'U3A2-09-c1', type:'mc', q:'Which is a requirement for a class action?', options:['At least one substantial common question of law or fact','The defendant must agree','All members must live in Melbourne','A jury must be requested'], answer:0, explain:'Common question.'},
+    {id:'U3A2-09-c2', type:'mc', q:'How do class actions promote equality?', options:['A group can take on a well-resourced defendant','They remove the need for evidence','They guarantee a win','They avoid all costs'], answer:0, explain:'Balancing power.'},
+    {id:'U3A2-09-c3', type:'tf', q:'Three people with claims against different defendants can bring a class action.', answer:false, explain:'False.'},
+    {id:'U3A2-09-c4', type:'text', q:'Another name for a class action is a ______ proceeding.', accept:['group','representative'], explain:'Group proceeding.'},
+    {id:'U3A2-09-c5', type:'mc', q:'Louise\'s clients planned to sue in the County Court. Why might that be a problem for a class action?', options:['The County Court cannot hear class actions — it must go to the Supreme Court (or Federal Court)','The County Court has no civil jurisdiction','Class actions must be heard at VCAT','Class actions need a jury of 12'], answer:0, src:'2024 Sec A Q1b', explain:'Per the 2024 examiners\' report.'}
+  ]
+},
+
+/* ============================================================ U3A2-10 */
+{ id:'U3A2-10', area:'Unit 3 AOS 2 · Remedies', title:'Remedies: damages and injunctions',
+  kk:'Damages and injunctions, and their specific purposes',
+  pretrain:[
+    {term:'Damages', def:'A remedy requiring the defendant to <span class="key">pay money</span> to the plaintiff.'},
+    {term:'Injunction', def:'A court order requiring a party to <span class="key">do</span> something or <span class="key">stop</span> doing something.'}
+  ],
+  teach:[
+    {type:'rule', title:'Purposes of remedies', html:`
+      <p>The main purpose of civil remedies is to <b>restore</b> the plaintiff, as far as possible, to the position they were in before the wrong. Some remedies also <b>punish</b> or <b>deter</b> the defendant (exemplary damages), or <b>prevent</b> future harm (injunctions).</p>`},
+    {type:'rule', title:'Types of damages', html:`
+      <table class="mini"><tr><th>Type</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td><b>Compensatory</b></td><td>Compensate for actual loss: <b>specific</b> (calculable, e.g. medical bills, lost wages) and <b>general</b> (e.g. pain and suffering)</td><td>Andy\'s medical costs and pain</td></tr>
+      <tr><td><b>Nominal</b></td><td>A <b>small</b> sum recognising the plaintiff\'s rights were infringed, though little loss was suffered</td><td>$1 for a trespass causing no damage</td></tr>
+      <tr><td><b>Exemplary</b> (punitive)</td><td><b>Punish</b> the defendant and <b>deter</b> others for outrageous conduct</td><td>Deliberate, malicious behaviour</td></tr>
+      <tr><td><b>Contemptuous</b></td><td>A tiny sum showing the court thinks the case <b>should not have been brought</b>, even though the plaintiff technically won</td><td>1 cent in a trivial defamation case</td></tr></table>`},
+    {type:'rule', title:'Types of injunctions', html:`
+      <p><b>Restrictive</b> (prohibitory): orders a party to <b>stop</b> or not do something — e.g. stop building over a boundary.</p>
+      <p><b>Mandatory</b>: orders a party to <b>do</b> something — e.g. remove a structure.</p>
+      <p>Injunctions can be <b>interlocutory</b> (temporary, until trial) or <b>permanent</b>.</p>`},
+    {type:'contrast', title:'Examples and non-examples',
+      examples:[
+        {text:'A neighbour is ordered to stop playing loud music after 10 pm.', why:'Restrictive injunction.'},
+        {text:'A company is ordered to pay $500,000 on top of compensation because it deliberately ignored safety warnings.', why:'Exemplary damages.'}],
+      nonexamples:[
+        {text:'"Nominal damages and contemptuous damages are the same."', why:'Nominal recognises a real infringement; contemptuous shows the court\'s disapproval of the claim being brought.'},
+        {text:'"Compensatory damages are designed to punish."', why:'They compensate; exemplary damages punish.'},
+        {text:'"An injunction is a payment of money."', why:'An injunction is an order to do or not do something.'}]}
+  ],
+  worked:[
+    {title:'Choosing a remedy', prompt:'Andy suffered serious injuries in Grant\'s attack: medical bills, lost wages and ongoing pain. Which damages are appropriate? (2025 scenario)',
+     steps:['Goal: restore Andy as far as possible.','Calculable losses (bills, wages) → specific compensatory damages.','Pain and suffering → general compensatory damages.','If the conduct was outrageous, exemplary damages may be sought too.'],
+     answer:'<b>Compensatory damages</b> — specific (bills, wages) and general (pain and suffering) — possibly with exemplary damages.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'A developer\'s crane keeps swinging over a homeowner\'s roof. The homeowner wants it stopped.',
+     given:['The homeowner wants conduct to stop, not money.','So the remedy is an injunction.'],
+     item:{id:'U3A2-10-f1', type:'text', q:'Which type of injunction? (one word)', accept:['restrictive','prohibitory','restraining'], explain:'Restrictive (prohibitory).', hint:'Stops something.'}}
+  ],
+  practice:[
+    {id:'U3A2-10-p1', type:'mc', q:'Which damages compensate for medical bills and lost wages?', options:['Compensatory (specific)','Nominal','Contemptuous','Exemplary'], answer:0, explain:'Specific compensatory.'},
+    {id:'U3A2-10-p2', type:'mc', q:'Which damages are designed to punish the defendant?', options:['Exemplary','Nominal','Compensatory','Contemptuous'], answer:0, explain:'Exemplary.'},
+    {id:'U3A2-10-p3', type:'text', q:'An injunction ordering a party to DO something is a ______ injunction.', accept:['mandatory'], explain:'Mandatory.'},
+    {id:'U3A2-10-p4', type:'mc', q:'Which damages show the court thinks the case should not have been brought?', options:['Contemptuous','Nominal','Exemplary','Compensatory'], answer:0, explain:'Contemptuous.'},
+    {id:'U3A2-10-p5', type:'tf', q:'The main purpose of civil remedies is to restore the plaintiff to their original position as far as possible.', answer:true, explain:'True.'},
+    {id:'U3A2-10-p6', type:'mc', q:'Pain and suffering is compensated by:', options:['General compensatory damages','Specific compensatory damages','Nominal damages','A restrictive injunction'], answer:0, explain:'General.'}
+  ],
+  check:[
+    {id:'U3A2-10-c1', type:'mc', q:'A trespasser walked across a farm without causing damage. The farmer receives $10. These are:', options:['Nominal damages','Exemplary damages','Contemptuous damages','Specific damages'], answer:0, explain:'Nominal — recognising the infringement.'},
+    {id:'U3A2-10-c2', type:'mc', q:'Which remedy best fits a plaintiff who wants a neighbour to stop building over the boundary?', options:['Restrictive injunction','Mandatory injunction','Nominal damages','Contemptuous damages'], answer:0, explain:'Restrictive.'},
+    {id:'U3A2-10-c3', type:'text', q:'A court order to do or not do something is called an ______.', accept:['injunction'], explain:'Injunction.'},
+    {id:'U3A2-10-c4', type:'tf', q:'Exemplary damages are also known as punitive damages.', answer:true, explain:'True.'},
+    {id:'U3A2-10-c5', type:'mc', q:'Which correctly matches type and purpose?', options:['Compensatory — restore; exemplary — punish','Nominal — punish; contemptuous — restore','Exemplary — restore; compensatory — punish','Contemptuous — compensate fully'], answer:0, explain:'Correct.'}
+  ]
+},
+
+/* ============================================================ U3A2-11 */
+{ id:'U3A2-11', area:'Unit 3 AOS 2 · Civil justice system', title:'Costs and time in civil disputes',
+  kk:'The impact of costs and time on the ability of the civil justice system to achieve the principles of justice during a civil dispute',
+  pretrain:[
+    {term:'Adverse costs order', def:'An order that the <span class="key">losing party pays</span> some or all of the winning party\'s legal costs.'},
+    {term:'Delay', def:'Time taken before a dispute is resolved — waiting for a hearing, pre-trial procedures, and the hearing itself.'},
+    {term:'Case management', def:'The judge or magistrate\'s active control of a case — timetables, directions, ordering mediation — to keep costs and delay down.'}
+  ],
+  teach:[
+    {type:'rule', title:'The method: factor → principle → why (same as the criminal topic)', html:`
+      <p>Note the difference: for <b>criminal</b> cases the study design names costs, time <b>and cultural differences</b>; for <b>civil</b> disputes it names only <b>costs and time</b>.</p>
+      <table class="mini"><tr><th>Factor</th><th>How it can undermine justice</th><th>Principle</th></tr>
+      <tr><td><b>Costs</b></td><td>Legal fees, court fees, expert reports and the risk of an adverse costs order may stop people bringing a valid claim</td><td><b>Access</b></td></tr>
+      <tr><td><b>Costs</b></td><td>A party who can't afford a lawyer faces a well-resourced opponent (e.g. a company or government)</td><td><b>Equality</b></td></tr>
+      <tr><td><b>Costs</b></td><td>A party who can't afford to appeal can't have an error corrected</td><td><b>Fairness</b> (participation)</td></tr>
+      <tr><td><b>Time</b></td><td>Long delays → evidence deteriorates, witnesses forget; stress; parties settle for less just to end it</td><td><b>Fairness</b></td></tr>
+      <tr><td><b>Time</b></td><td>Delay deters people from pursuing claims at all</td><td><b>Access</b></td></tr></table>`},
+    {type:'contrast', title:'Responses that reduce the impact — and their limits',
+      rule:'Strong answers say what the system does about costs and time, and whether it is enough.',
+      examples:[
+        {text:'CAV conciliation is free; VCAT fees are low and lawyers usually aren\'t needed.', why:'Reduce costs → access. Limit: CAV can\'t make binding decisions.'},
+        {text:'Judges use case management and order mediation before trial.', why:'Reduce time and cost. Limit: mediation may fail and add a step.'},
+        {text:'Class actions let many small claims proceed together; litigation funders pay costs.', why:'Reduce costs → access. Limit: funders take a share of the money.'},
+        {text:'"No win, no fee" arrangements.', why:'Reduce upfront cost. Limit: only for claims a lawyer thinks will win.'}],
+      nonexamples:[
+        {text:'"Costs affect efficiency."', why:'Efficiency is not a principle of justice. Link to fairness, equality or access.'},
+        {text:'"Cultural differences are one of the two factors in the civil study design."', why:'No — civil is costs and time only. Cultural differences are in the criminal list.'},
+        {text:'"Victoria Legal Aid funds most civil cases."', why:'Legal aid for civil matters is very limited.'}]}
+  ],
+  worked:[
+    {title:'Analysing costs before suing', prompt:'Analyse the importance of costs as a factor for Vanderstock and Davies before they sued the State of Victoria in the High Court. (2024 Section B Q2e — outline)',
+     steps:['Factor: costs — complex constitutional case needs experienced barristers and solicitors; High Court filing and hearing fees.','Risk: an adverse costs order if they lose, against a defendant (Victoria) with large resources.','Effect: this could deter them → access.','Twist from the source: the Commonwealth supported them financially, which reduced the importance of costs.'],
+     answer:'Costs were a <b>major potential deterrent</b> (fees + adverse costs risk), but <b>Commonwealth backing</b> greatly reduced their significance.'}
+  ],
+  faded:[
+    {title:'Your turn', prompt:'Mia\'s building dispute waits 18 months for a hearing. Her key witness, a site foreman, has since moved overseas and can\'t remember details clearly.',
+     given:['Factor: time (delay).','Effect: evidence has deteriorated, so Mia can\'t present her case fully.'],
+     item:{id:'U3A2-11-f1', type:'mc', q:'So which principle is most directly affected?', options:['Fairness — Mia can\'t fully participate with good evidence','Efficiency','Specialisation','Denunciation'], answer:0, explain:'Delay weakens evidence → fair hearing.', hint:'Participation is part of which principle?'}}
+  ],
+  practice:[
+    {id:'U3A2-11-p1', type:'mc', q:'Which two factors does the study design name as affecting the principles of justice in CIVIL disputes?', options:['Costs and time','Costs, time and cultural differences','Juries and judges','Negotiation and mediation'], answer:0, explain:'Costs and time.'},
+    {id:'U3A2-11-p2', type:'mc', q:'The risk of having to pay the other side\'s legal costs if you lose most directly affects:', options:['Access','Openness','Specialisation','Deterrence'], answer:0, explain:'It can stop people bringing claims → access.'},
+    {id:'U3A2-11-p3', type:'mc', q:'A self-represented tenant faces a property company with a legal team. Which principle is most at risk?', options:['Equality','Openness','Efficiency','Specialisation'], answer:0, explain:'Equality.'},
+    {id:'U3A2-11-p4', type:'mc', q:'Which response reduces delay in civil cases?', options:['Case management by judges','Adverse costs orders','Majority verdicts in murder trials','Victim impact statements'], answer:0, explain:'Case management.'},
+    {id:'U3A2-11-p5', type:'tf', q:'Cultural differences are one of the factors named for civil disputes in the study design.', answer:false, explain:'False — civil: costs and time.'},
+    {id:'U3A2-11-p6', type:'text', q:'An order that the losing party pays the winner\'s legal costs is an ______ costs order.', accept:['adverse'], explain:'Adverse.'}
+  ],
+  check:[
+    {id:'U3A2-11-c1', type:'mc', q:'Which is the best way to structure an answer about costs or time?', options:['Factor → specific principle → why, plus responses and their limits','List the courts','Define all three principles only','Describe the jury'], answer:0, explain:'Factor → principle → why.'},
+    {id:'U3A2-11-c2', type:'mc', q:'In Vanderstock v Victoria, what reduced the importance of costs for the plaintiffs?', options:['The Commonwealth supported them financially','The High Court charges no fees','Victoria paid their lawyers','There was no risk of losing'], answer:0, src:'2024 Sec B Q2e', explain:'Commonwealth backing.'},
+    {id:'U3A2-11-c3', type:'tf', q:'Long delays can cause evidence to deteriorate, affecting fairness.', answer:true, explain:'True.'},
+    {id:'U3A2-11-c4', type:'mc', q:'Which body\'s FREE service most directly reduces the impact of costs on access?', options:['Consumer Affairs Victoria','The Supreme Court','The Court of Appeal','A litigation funder'], answer:0, explain:'CAV is free.'},
+    {id:'U3A2-11-c5', type:'mc', q:'"Costs make the civil system less efficient." Why would examiners give this little credit?', options:['Efficiency is not a principle of justice','Costs don\'t matter in civil cases','It should say criminal','It is too long'], answer:0, explain:'Link to fairness, equality or access.'}
   ]
 }
 
