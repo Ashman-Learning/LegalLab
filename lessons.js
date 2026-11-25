@@ -13,7 +13,7 @@
  * Teach card types: rule {title, html} · contrast {title, rule, examples, nonexamples} · diagram {title, svg, caption}
  * Set released:false to hide a lesson until it's taught.
  */
-window.CONTENT_VERSION = '1.4.0';
+window.CONTENT_VERSION = '1.5.0';
 
 const SVG_COURTS = `
 <svg class="diagram" viewBox="0 0 640 380" role="img" aria-label="Victorian court hierarchy for criminal cases">
@@ -126,81 +126,138 @@ const SVG_CIVIL_COURTS = `
  <text x="415" y="304" font-size="17" fill="#5b6675">arbitration &lt; $10,000</text>
 </svg>`;
 
+const SVG_FAIR_EQUAL = `
+<svg class="diagram" viewBox="0 0 400 470" role="img" aria-label="Fairness looks at the process; equality compares people">
+ <rect x="6" y="6" width="388" height="220" rx="14" fill="#e8eef6" stroke="#1d3557" stroke-width="3"/>
+ <text x="200" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3557">FAIRNESS</text>
+ <text x="200" y="64" text-anchor="middle" font-size="17" fill="#5b6675">looks at the PROCESS</text>
+ <text x="30" y="104" font-size="19" fill="#1b2430">✔ Can people <tspan font-weight="700">take part</tspan>?</text>
+ <text x="30" y="148" font-size="19" fill="#1b2430">✔ Is the decider <tspan font-weight="700">unbiased</tspan>?</text>
+ <text x="30" y="192" font-size="19" fill="#1b2430">✔ Is it <tspan font-weight="700">open</tspan> to view?</text>
+ <rect x="6" y="240" width="388" height="224" rx="14" fill="#fff4c2" stroke="#b08900" stroke-width="3"/>
+ <text x="200" y="274" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3557">EQUALITY</text>
+ <text x="200" y="298" text-anchor="middle" font-size="17" fill="#5b6675">COMPARES PEOPLE</text>
+ <circle cx="150" cy="330" r="16" fill="#1f7a8c"/><text x="200" y="338" text-anchor="middle" font-size="26" font-weight="700" fill="#1b2430">=</text><circle cx="250" cy="330" r="16" fill="#1f7a8c"/>
+ <text x="30" y="380" font-size="19" fill="#1b2430">① <tspan font-weight="700">Same treatment</tspan> for all</text>
+ <text x="30" y="418" font-size="19" fill="#1b2430">② If same = disadvantage,</text>
+ <text x="56" y="446" font-size="19" fill="#1b2430"><tspan font-weight="700">extra help</tspan> (adequate measures)</text>
+</svg>`;
+
 window.LESSONS = [
 
 /* ============================================================ 1 */
 { id:'U3A1-01', area:'Unit 3 AOS 1 · Criminal justice system', title:'The principles of justice',
   kk:'The principles of justice: fairness, equality and access',
   pretrain:[
-    {term:'Fairness', def:'All people can <span class="key">participate</span> in the justice system, and its processes are <span class="key">impartial</span> and <span class="key">open</span>.'},
-    {term:'Equality', def:'All people are <span class="key">treated in the same way</span> — and if the same treatment creates disadvantage, <span class="key">adequate measures</span> are put in place so all can engage without disadvantage.'},
-    {term:'Access', def:'All people can engage with the justice system and its processes on an <span class="key">informed basis</span>.'}
+    {term:'Fairness', def:'Asks about the <span class="key">PROCESS</span>: can people <span class="key">take part</span>, is the decision-maker <span class="key">unbiased</span>, and is it done <span class="key">in the open</span>?'},
+    {term:'Equality', def:'Asks about how <span class="key">PEOPLE are treated compared with each other</span>: does everyone get the <span class="key">same treatment</span> — and if the same treatment would leave someone behind, do they get <span class="key">extra help</span>?'},
+    {term:'Access', def:'Asks whether people can <span class="key">know about and use</span> the justice system — engaging with it on an <span class="key">informed basis</span>.'}
   ],
   teach:[
-    {type:'rule', title:'Three principles, each with parts', html:`
-      <p>Every evaluation question in this course asks you to judge something against these three principles. Learn the <b>parts</b>, because marks come from linking a feature to a specific part.</p>
-      <table class="mini"><tr><th>Principle</th><th>Parts</th></tr>
-      <tr><td><b>Fairness</b></td><td>① participation ② impartiality ③ openness</td></tr>
-      <tr><td><b>Equality</b></td><td>① same treatment ② adequate measures where same treatment causes disadvantage</td></tr>
-      <tr><td><b>Access</b></td><td>engaging on an informed basis — knowing your rights and how processes work, and being able to use them</td></tr></table>`},
-    {type:'contrast', title:'Fairness — examples and non-examples',
-      rule:'Ask: is this about <b>taking part</b>, <b>no bias</b>, or <b>being public</b>? If so, it is fairness.',
+    {type:'rule', title:'Three principles, three questions', html:`
+      <p>Each principle asks <b>one question</b>. Learn the question first; the official parts come after.</p>
+      <table class="mini"><tr><th>Principle</th><th>The question it asks</th><th>Official parts</th></tr>
+      <tr><td><b>Fairness</b></td><td>Is the <b>process</b> fair?</td><td>① participation ② impartiality ③ openness</td></tr>
+      <tr><td><b>Equality</b></td><td>Are <b>people</b> treated alike — with extra help where alike isn't enough?</td><td>① same treatment ② adequate measures where same treatment causes disadvantage</td></tr>
+      <tr><td><b>Access</b></td><td>Can people <b>know about and use</b> the system?</td><td>engaging on an informed basis</td></tr></table>`},
+    {type:'rule', title:'A picture to hold onto: a football match', html:`
+      <table class="mini"><tr><th>Principle</th><th>In a football match…</th></tr>
+      <tr><td><b>Fairness</b></td><td>Both teams get to <b>play</b>. The <b>umpire</b> doesn't barrack for either side. The game is played where the <b>crowd can watch</b>.</td></tr>
+      <tr><td><b>Equality</b></td><td>Both teams play by the <b>same rules</b>. A player who uses a wheelchair gets a <b>ramp</b> onto the ground — otherwise "same rules" would shut them out.</td></tr>
+      <tr><td><b>Access</b></td><td>People <b>know the game is on</b>, understand the rules, and can <b>get to the ground</b>.</td></tr></table>
+      <p>Notice: fairness is about <b>how the game is run</b>. Equality is about <b>how the players are treated compared with each other</b>.</p>`},
+    {type:'diagram', title:'Process or people?', svg:SVG_FAIR_EQUAL, caption:'Fairness looks at the hearing itself. Equality compares one person with another.'},
+    {type:'contrast', title:'Fairness — about the process',
+      rule:'Ask: is this about <b>taking part</b>, an <b>unbiased decision-maker</b>, or the process being <b>public</b>? If so, it is fairness.',
       examples:[
-        {text:'The accused can call witnesses and cross-examine the prosecution\'s witnesses.', why:'Participation.'},
-        {text:'A judge who personally knows the victim withdraws from the case.', why:'Impartiality.'},
-        {text:'Trials are generally open to the public and the media.', why:'Openness.'}],
+        {text:'The accused can call witnesses and cross-examine the prosecution\'s witnesses.', why:'Taking part → participation.'},
+        {text:'A judge who personally knows the victim withdraws from the case.', why:'Unbiased decision-maker → impartiality.'},
+        {text:'Trials are generally open to the public and the media.', why:'Public → openness.'}],
       nonexamples:[
-        {text:'A free phone line explains how to plead in the Magistrates\' Court.', why:'This is about being informed → access.'},
-        {text:'The same rules of evidence apply to every accused.', why:'This is about same treatment → equality.'}]},
-    {type:'contrast', title:'Equality — examples and non-examples',
-      rule:'Equality has <b>two</b> parts. Treating everyone identically is only half of it.',
+        {text:'The same rules of evidence apply to every accused.', why:'This compares people → equality.'},
+        {text:'A free phone line explains how to plead in the Magistrates\' Court.', why:'This helps people know about the system → access.'}]},
+    {type:'contrast', title:'Equality — about comparing people',
+      rule:'Equality has <b>two</b> parts. Ask: are people treated <b>the same</b>? And if the same treatment would leave someone at a <b>disadvantage</b>, is something <b>extra</b> provided?',
       examples:[
-        {text:'The same rules of evidence apply whether the accused is wealthy or poor.', why:'Same treatment.'},
-        {text:'A Deaf witness is given an Auslan interpreter.', why:'Same treatment would disadvantage her, so an adequate measure is provided.'}],
+        {text:'The same rules of evidence apply whether the accused is wealthy or poor.', why:'Same treatment — part ①.'},
+        {text:'A Deaf witness is given an Auslan interpreter.', why:'Without it, "same treatment" would shut her out — an adequate measure, part ②.'}],
       nonexamples:[
-        {text:'Treating everyone identically even though it shuts some people out.', why:'Fails part ② — when sameness creates disadvantage, equality requires a measure.'},
-        {text:'Court hearings are open to the media.', why:'That is openness → fairness.'}]},
-    {type:'contrast', title:'Access — examples and non-examples',
+        {text:'Treating everyone identically even though it shuts some people out.', why:'That fails part ②. Equality is not just "identical".'},
+        {text:'Court hearings are open to the media.', why:'That is about the process being public → fairness.'}]},
+    {type:'pairs', title:'Fairness or equality? Spot the difference',
+      rule:'Each row is about the same topic. The left one is fairness; the right one is equality. The test: <b>is it about how the process runs, or about how people are treated compared with each other?</b>',
+      rows:[
+        {topic:'Questioning witnesses',
+          fair:{text:'The accused is allowed to question the prosecution\'s witnesses.', why:'The accused takes part → participation.'},
+          equal:{text:'Every accused, rich or poor, follows the same rules when questioning witnesses.', why:'Comparing people → same treatment.'}},
+        {topic:'The magistrate',
+          fair:{text:'A magistrate who is related to the accused steps aside.', why:'Unbiased decision-maker → impartiality.'},
+          equal:{text:'Magistrates apply the same sentencing principles to every offender, whatever their background.', why:'Comparing people → same treatment.'}},
+        {topic:'An open hearing',
+          fair:{text:'The hearing is held in open court.', why:'The process is public → openness.'},
+          equal:{text:'An accused with a hearing impairment is given a hearing loop so she can follow the hearing.', why:'Extra help so she isn\'t disadvantaged → adequate measures.'}}]},
+    {type:'rule', title:'When a feature fits both', html:`
+      <p>Some features genuinely support more than one principle. An interpreter, for example, removes a disadvantage (<b>equality</b>) <i>and</i> lets the person take part (<b>fairness</b>).</p>
+      <p><b>In this app:</b> if a feature gives a particular person <b>something extra</b> to overcome a disadvantage, the best answer is <b>equality</b>.</p>
+      <p><b>In the exam:</b> the question usually names the principle. Your job is to link the feature to that principle's <b>specific part</b> — e.g. "the interpreter allows Mia to <i>participate</i>, upholding fairness".</p>`},
+    {type:'contrast', title:'Access — about knowing and using the system',
       rule:'Ask: does this help people <b>know about and use</b> the system?',
       examples:[
         {text:'Victoria Legal Aid publishes plain-English guides on going to court.'},
         {text:'A community legal centre gives free advice to a victim of crime.'}],
       nonexamples:[
-        {text:'A magistrate has no connection to either party.', why:'No bias → fairness (impartiality).'},
+        {text:'A magistrate has no connection to either party.', why:'Unbiased decision-maker → fairness.'},
         {text:'Every accused must follow the same court procedures.', why:'Same treatment → equality.'}]},
     {type:'rule', title:'Exam trap', html:`
       <p>There are exactly <b>three</b> principles of justice in VCE Legal Studies. <span class="key">Efficiency</span>, <span class="key">timeliness</span> and <span class="key">cost</span> are <b>not</b> principles — they are factors that can <i>affect</i> the principles (e.g. long delays can reduce access).</p>`}
   ],
   worked:[
-    {title:'Classifying a feature', prompt:'Mia is Deaf and is a witness in a County Court trial. The court provides an Auslan interpreter. Which principle of justice is most directly upheld?',
+    {title:'Equality — step by step', prompt:'Mia is Deaf and is a witness in a County Court trial. The court provides an Auslan interpreter. Which principle of justice is most directly upheld?',
      steps:[
-      'Identify what happened: one person receives something extra — an interpreter.',
+      'Process or people? One person receives something extra that others don\'t — that compares people.',
       'Ask the equality test: would <i>identical</i> treatment disadvantage Mia? Yes — without an interpreter she could not engage with the trial.',
-      'Match to a definition: equality includes <b>adequate measures</b> where same treatment creates disadvantage.',
+      'Match to a part: equality includes <b>adequate measures</b> where same treatment creates disadvantage.',
       'Write the link: the interpreter removes the disadvantage so Mia engages on an equal footing.'],
-     answer:'<b>Equality</b> — an adequate measure is provided because same treatment would disadvantage Mia.'}
+     answer:'<b>Equality</b> — an adequate measure is provided because same treatment would disadvantage Mia.'},
+    {title:'Fairness — step by step', prompt:'A County Court judge realises she once acted as the accused\'s lawyer, so she hands the trial to another judge. Which principle of justice is most directly upheld?',
+     steps:[
+      'Process or people? This is about who makes the decision — how the process runs. Nobody is being compared with anyone else.',
+      'Which part of fairness? Participation, impartiality or openness? It is about the decision-maker having no bias.',
+      'Match to a part: <b>impartiality</b>.',
+      'Write the link: replacing the judge means the decision is made by someone with no connection to the accused.'],
+     answer:'<b>Fairness</b> — specifically impartiality.'}
   ],
   faded:[
-    {title:'Your turn', prompt:'The County Court publishes the judge\'s sentencing remarks online after every sentencing hearing.',
-     given:['Identify what happened: the reasons for a decision are made available to the public.','Which part does this match? Being public — openness.'],
-     item:{id:'U3A1-01-f1', type:'mc', q:'So which principle of justice is upheld?', options:['Fairness','Equality','Access','Efficiency'], answer:0,
-       explain:'Openness is a part of fairness. (Publication can also help people be informed, but the most direct link is openness → fairness.)', hint:'Openness is one of the three parts of which principle?'}}
+    {title:'Your turn', prompt:'At his trial, Kai\'s lawyer calls two witnesses and cross-examines the prosecution\'s main witness.',
+     given:['Process or people? This is about how the trial runs — Kai is not being compared with anyone.','Which part? Kai is taking part in his own trial.'],
+     item:{id:'U3A1-01-f2', type:'mc', q:'So which principle of justice is upheld?', options:['Fairness — participation','Equality — same treatment','Equality — adequate measures','Access — informed basis'], answer:0,
+       explain:'Taking part in the process = participation, a part of fairness.', hint:'Is anyone being compared with anyone else?'}},
+    {title:'Your turn', prompt:'Ana uses a wheelchair. The court moves her hearing to a ground-floor courtroom with ramp access.',
+     given:['Process or people? Ana is given something extra that others don\'t need.'],
+     item:{id:'U3A1-01-f3', type:'mc', q:'Would the same treatment as everyone else (an upstairs courtroom) disadvantage her — and so which principle is upheld?', options:['Yes — equality (adequate measures)','No — fairness (openness)','Yes — access (informed basis)','No — fairness (impartiality)'], answer:0,
+       explain:'Same treatment would shut her out, so an adequate measure is provided → equality.', hint:'Something extra to overcome a disadvantage…'}}
   ],
   practice:[
     {id:'U3A1-01-p1', type:'mc', q:'Which principle requires that the justice system\'s processes be <b>impartial and open</b>?', options:['Fairness','Equality','Access','Efficiency'], answer:0, explain:'Fairness = participation, impartiality, openness.', hint:'Think: no bias, and in public.'},
+    {id:'U3A1-01-p8', type:'mc', q:'Fairness is mainly about the ______; equality is mainly about how ______ are treated compared with each other.', options:['process; people','people; process','money; lawyers','courts; judges'], answer:0, explain:'Fairness → process. Equality → people compared.', hint:'Process or people?'},
+    {id:'U3A1-01-p9', type:'mc', q:'Every accused, wealthy or poor, faces the same rules of evidence. Fairness or equality?', options:['Equality','Fairness'], answer:0, explain:'It compares people → same treatment → equality.'},
+    {id:'U3A1-01-p10', type:'mc', q:'A trial is held in open court, where the public and media can attend. Fairness or equality?', options:['Fairness','Equality'], answer:0, explain:'How the process runs → openness → fairness.'},
+    {id:'U3A1-01-p11', type:'mc', q:'An accused who doesn\'t speak English is given a free interpreter. Fairness or equality? (Use this app\'s tie-break rule.)', options:['Equality','Fairness'], answer:0, explain:'Something extra for one person to overcome a disadvantage → equality (adequate measures). It also helps participation, but equality is the best answer.'},
     {id:'U3A1-01-p2', type:'mc', q:'A free online guide explains to accused people what happens at their first court date. Which principle does this most directly support?', options:['Access','Fairness','Equality','Impartiality'], answer:0, explain:'It helps people engage on an informed basis → access.'},
     {id:'U3A1-01-p3', type:'mc', q:'A courtroom has a hearing loop and wheelchair ramp so that a witness with a disability can give evidence without disadvantage. Which principle?', options:['Equality','Fairness','Access','Openness'], answer:0, explain:'Same treatment would disadvantage the witness, so an adequate measure is provided → equality.'},
     {id:'U3A1-01-p4', type:'text', q:'Name the principle of justice: all people can engage with the justice system on an <b>informed basis</b>.', accept:['access'], explain:'Access = engaging on an informed basis.'},
     {id:'U3A1-01-p5', type:'tf', q:'Under the VCE definition, equality always means treating everyone in exactly the same way.', answer:false, explain:'False. Equality also requires adequate measures where same treatment creates disadvantage.'},
     {id:'U3A1-01-p6', type:'mc', q:'Which of these is <b>not</b> one of the three principles of justice in VCE Legal Studies?', options:['Efficiency','Fairness','Equality','Access'], answer:0, explain:'Efficiency is not a principle of justice. It can affect the principles, but it is not one.'},
-    {id:'U3A1-01-p7', type:'mc', q:'The accused is allowed to give evidence and question the prosecution\'s witnesses. Which part of which principle?', options:['Participation — fairness','Same treatment — equality','Being informed — access','Openness — fairness'], answer:0, explain:'Taking part in the process = participation, a part of fairness.'}
+    {id:'U3A1-01-p7', type:'mc', q:'The accused is allowed to give evidence and question the prosecution\'s witnesses. Which part of which principle?', options:['Participation — fairness','Same treatment — equality','Being informed — access','Openness — fairness'], answer:0, explain:'Taking part in the process = participation, a part of fairness.'},
+    {id:'U3A1-01-p12', type:'tf', q:'"Participation" is a part of equality.', answer:false, explain:'False. Participation is a part of fairness. Equality\'s parts are same treatment and adequate measures.'}
   ],
   check:[
     {id:'U3A1-01-c1', type:'mc', q:'A magistrate discovers she is related to the accused and withdraws from the case. Which principle is upheld?', options:['Fairness','Equality','Access','None of these'], answer:0, explain:'Avoiding bias = impartiality → fairness.'},
     {id:'U3A1-01-c2', type:'mc', q:'The same rules of evidence apply to every accused regardless of their wealth. Which principle?', options:['Equality','Fairness','Access','Openness'], answer:0, explain:'Same treatment → equality.'},
     {id:'U3A1-01-c3', type:'text', q:'Which principle\'s definition includes <b>adequate measures</b> where the same treatment creates disadvantage?', accept:['equality'], explain:'Equality.'},
     {id:'U3A1-01-c4', type:'mc', q:'A community legal centre explains to a victim of crime what her rights are in the upcoming trial. Which principle?', options:['Access','Fairness','Equality','Impartiality'], answer:0, explain:'Being informed about rights and processes → access.'},
-    {id:'U3A1-01-c5', type:'mc', q:'Which list contains <b>only</b> parts of fairness?', options:['Participation, impartiality, openness','Participation, equality, access','Openness, efficiency, impartiality','Same treatment, adequate measures, openness'], answer:0, explain:'Fairness = participation, impartiality, openness.'}
+    {id:'U3A1-01-c5', type:'mc', q:'Which list contains <b>only</b> parts of fairness?', options:['Participation, impartiality, openness','Participation, equality, access','Openness, efficiency, impartiality','Same treatment, adequate measures, openness'], answer:0, explain:'Fairness = participation, impartiality, openness.'},
+    {id:'U3A1-01-c6', type:'mc', q:'Which feature is best described as upholding <b>equality</b> rather than fairness?', options:['A witness with a vision impairment is given documents in large print','The accused cross-examines a witness','The judge has no link to either party','The trial is reported in the media'], answer:0, explain:'Extra help so one person isn\'t disadvantaged → adequate measures → equality. The others are about the process → fairness.'}
   ]
 },
 

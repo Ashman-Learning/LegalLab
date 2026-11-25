@@ -293,6 +293,12 @@ function renderStep() {
       inner += (c.examples || []).map(x => `<div class="ex"><b>Example</b>${x.text || x}${x.why ? `<div class="why">${x.why}</div>` : ''}</div>`).join('');
       inner += (c.nonexamples || []).map(x => `<div class="nonex"><b>Not an example</b>${x.text}${x.why ? `<div class="why">${x.why}</div>` : ''}</div>`).join('');
     }
+    if (c.type === 'pairs') {
+      inner += c.rule ? `<p>${c.rule}</p>` : '';
+      inner += (c.rows || []).map(r => `<div class="pair">${r.topic ? `<div class="pt">${r.topic}</div>` : ''}<div class="pg">
+        <div class="pf"><b>Fairness</b>${r.fair.text}${r.fair.why ? `<div class="why">${r.fair.why}</div>` : ''}</div>
+        <div class="pe"><b>Equality</b>${r.equal.text}${r.equal.why ? `<div class="why">${r.equal.why}</div>` : ''}</div></div></div>`).join('');
+    }
     inner += nextBtn();
     app().innerHTML = frame(inner, step); wireNext();
   } else if (step.kind === 'worked') {
@@ -484,6 +490,10 @@ function extraPractice(ids, label) {
 
 /* ---------- boot ---------- */
 load();
+// Content updates: if a lesson the student has already mastered gains new questions,
+// add those questions to their review queue (due tomorrow). Progress is never reset.
+LESSONS.forEach(l => { if (S.lessons[l.id] && S.lessons[l.id].mastered) enrolItems(l); });
+save();
 $('#ver').textContent = 'v' + (window.CONTENT_VERSION || '?');
 $('#homeLink').onclick = home;
 home();
